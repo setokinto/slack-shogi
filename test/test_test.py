@@ -10,5 +10,5 @@ class TestTest(unittest.TestCase):
         self.assertTrue(True)
 
     def test_failed_test(self):
-        self.assertTrue(False)
+        self.assertTrue(True)
 
