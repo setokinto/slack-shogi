@@ -9,3 +9,6 @@ class TestTest(unittest.TestCase):
     def test_test(self):
         self.assertTrue(True)
 
+    def test_failed_test(self):
+        self.assertTrue(False)
+
