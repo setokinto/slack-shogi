@@ -1,2 +1,0 @@
-API_TOKEN = "xoxb-60417138278-w6MzZqDM6qkbBf35XixtG8Cx"
-
