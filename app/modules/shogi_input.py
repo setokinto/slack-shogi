@@ -62,6 +62,10 @@ class ShogiInput:
         # TODO:
         return False
     @staticmethod
+    def basic_move(channel_id, from_x, from_y, to_x, to_y, promote):
+        shogi = ShogiInput.manager.get_shogi(channel_id)
+        shogi.move(from_x, from_y, to_x, to_y, promote)
+    @staticmethod
     def get_shogi_board(channel_id):
         # TODO:
         shogi = ShogiInput.manager.get_shogi(channel_id)
@@ -87,8 +91,8 @@ class Shogi:
         self.channel_id = channel_id
         self.user_ids = user_ids
         self.id = uuid.uuid4().hex
-    def move(from_x, from_y, to_x, to_y, promote):
-        pass
+    def move(self, from_x, from_y, to_x, to_y, promote):
+        self.shogi.move(from_x, from_y, to_x, to_y, promote)
     @property
     def board(self):
         return self.shogi.board
