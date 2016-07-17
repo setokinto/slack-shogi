@@ -1,38 +1,5 @@
 
-from enum import Enum
-
-
-class Koma(Enum):
-    empty = 0
-    fu = 0x01
-    kyosha = 0x02
-    keima = 0x03
-    gin = 0x04
-    kin = 0x05
-    kaku = 0x06
-    hisha = 0x07
-    gyoku = 0x08
-    promoted_fu = 0x11
-    promoted_kyosha = 0x12
-    promoted_keima = 0x13
-    promoted_gin = 0x14
-    promoted_kaku = 0x16
-    promoted_hisha = 0x17
-
-    opponent_fu = 0x21
-    opponent_kyosha = 0x22
-    opponent_keima = 0x23
-    opponent_gin = 0x24
-    opponent_kin = 0x25
-    opponent_kaku = 0x26
-    opponent_hisha = 0x27
-    opponent_gyoku = 0x28
-    opponent_promoted_fu = 0x31
-    opponent_promoted_kyosha = 0x32
-    opponent_promoted_keima = 0x33
-    opponent_promoted_gin = 0x34
-    opponent_promoted_kaku = 0x36
-    opponent_promoted_hisha = 0x37
+from shogi import Koma
 
 
 # TODO : Change emoji string
@@ -69,121 +36,15 @@ koma2emoji = {
     Koma.opponent_promoted_hisha: ":ok_woman::skin-tone-6:"
 }
 
-# for test
-# TODO: remove this.
-start_board = [
-            [
-                Koma.opponent_kyosha,
-                Koma.opponent_keima,
-                Koma.opponent_gin,
-                Koma.opponent_kin,
-                Koma.opponent_gyoku,
-                Koma.opponent_kin,
-                Koma.opponent_gin,
-                Koma.opponent_keima,
-                Koma.opponent_kyosha,
-            ],
-            [
-                Koma.empty,
-                Koma.opponent_hisha,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.opponent_kaku,
-                Koma.empty,
-            ],
-            [
-                Koma.opponent_fu,
-                Koma.opponent_fu,
-                Koma.opponent_fu,
-                Koma.opponent_fu,
-                Koma.opponent_fu,
-                Koma.opponent_fu,
-                Koma.opponent_fu,
-                Koma.opponent_fu,
-                Koma.opponent_fu,
-            ],
-            [
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-            ],
-            [
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-            ],
-            [
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-            ],
-            [
-                Koma.fu,
-                Koma.fu,
-                Koma.fu,
-                Koma.fu,
-                Koma.fu,
-                Koma.fu,
-                Koma.fu,
-                Koma.fu,
-                Koma.fu,
-            ],
-            [
-                Koma.empty,
-                Koma.kaku,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.empty,
-                Koma.hisha,
-                Koma.empty,
-            ],
-            [
-                Koma.kyosha,
-                Koma.keima,
-                Koma.gin,
-                Koma.kin,
-                Koma.gyoku,
-                Koma.kin,
-                Koma.gin,
-                Koma.keima,
-                Koma.kyosha,
-            ],
-        ]
-
 class ShogiOutput:
     @staticmethod
-    def make_board_emoji(board, first_koma, second_koma):
-        # socond koma
-        # TODO : Insert player name.
-        output_text = "後手 ： "
+    def make_board_emoji(board_info):
+        output_text = "後手 {} ： ".format(board_info["info"]["second"]["name"])
         cnt = 0
-        if second_koma:
-            for koma in second_koma:
+        if board_info["second"]:
+            for koma in board_info["second"]:
                 cnt += 1
-                # if more than 7 a number of motigoma,
+                # if a number of motigoma is more than 7,
                 # go to next line.
                 if cnt == 7:
                     output_text += "\n　　    "
@@ -197,20 +58,18 @@ class ShogiOutput:
         # board
         for x in range(9):
             for y in range(9):
-                # TODO : This is test code. Remove this code after.
-                output_text += koma2emoji[start_board[x][y]]
-                #output_text += koma2emoji[board[x][y]]
+                output_text += koma2emoji[board["board"][x][y]]
             output_text += "\n"
         output_text += "\n"
 
         # socond koma
         # TODO : Insert player name.
-        output_text += "先手 : "
+        output_text += "先手 {} ： ".format(board_info["info"]["first"]["name"])
         cnt = 0
-        if first_koma:
-            for koma in first_koma:
+        if board_info["first"]:
+            for koma in board_info["first"]:
                 cnt += 1
-                # if more than 7 a number of motigoma,
+                # if a number of motigoma is more than 7,
                 # go to next line.
                 if cnt == 7:
                     output_text += "\n　　    "

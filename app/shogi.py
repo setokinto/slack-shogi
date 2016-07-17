@@ -73,7 +73,6 @@ def koma_move(message, position, koma, sub_position, promote):
         ShogiInput.move(position, koma, sub_position, promote)
         board = ShogiInput.get_shogi_board(channel_id)
         board_str = ShogiOutput.make_board_emoji(board)
-        # TODO: use yossy's outputer
         message.send(board_str)
     else:
         message.reply("You cannot move this!!")
