@@ -76,3 +76,4 @@ def koma_move(message, position, koma, sub_position, promote):
         message.send(board_str)
     else:
         message.reply("You cannot move this!!")
+
