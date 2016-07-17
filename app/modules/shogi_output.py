@@ -3,7 +3,6 @@ from enum import Enum
 
 
 class Koma(Enum):
-    # TODO: Merge Shogi module
     empty = 0
     fu = 0x01
     kyosha = 0x02
@@ -13,27 +12,27 @@ class Koma(Enum):
     kaku = 0x06
     hisha = 0x07
     gyoku = 0x08
-    promoted_fu = 0x10 + Koma.fu.value
-    promoted_kyosha = 0x10 + Koma.kyosha.value
-    promoted_keima = 0x10 + Koma.keima.value
-    promoted_gin = 0x10 + Koma.gin.value
-    promoted_kaku = 0x10 + Koma.kaku.value
-    promoted_hisha = 0x10 + Koma.hisha.value
+    promoted_fu = 0x11
+    promoted_kyosha = 0x12
+    promoted_keima = 0x13
+    promoted_gin = 0x14
+    promoted_kaku = 0x16
+    promoted_hisha = 0x17
 
-    opponent_fu = 0x20 + Koma.fu.value
-    opponent_kyosha = 0x20 + Koma.kyosha.value
-    opponent_keima = 0x20 + Koma.fu.value
-    opponent_gin = 0x20 + Koma.keima.value
-    opponent_kin = 0x20 + Koma.gin.value
-    opponent_kaku = 0x20 + Koma.kaku.value
-    opponent_hisha = 0x20 + Koma.hisha.value
-    opponent_gyoku = 0x20 + Koma.gyoku.value
-    opponent_promoted_fu = 0x30 + Koma.fu.value
-    opponent_promoted_kyosha = 0x30 + Koma.kyosha.value
-    opponent_promoted_keima = 0x30 + Koma.keima.value
-    opponent_promoted_gin = 0x30 + Koma.gin.value
-    opponent_promoted_kaku = 0x30 + Koma.kaku.value
-    opponent_promoted_hisha = 0x30 + Koma.hisha.value
+    opponent_fu = 0x21
+    opponent_kyosha = 0x22
+    opponent_keima = 0x23
+    opponent_gin = 0x24
+    opponent_kin = 0x25
+    opponent_kaku = 0x26
+    opponent_hisha = 0x27
+    opponent_gyoku = 0x28
+    opponent_promoted_fu = 0x31
+    opponent_promoted_kyosha = 0x32
+    opponent_promoted_keima = 0x33
+    opponent_promoted_gin = 0x34
+    opponent_promoted_kaku = 0x36
+    opponent_promoted_hisha = 0x37
 
 
 # TODO : Change emoji string
