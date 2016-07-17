@@ -38,19 +38,19 @@ class Koma(Enum):
 # TODO : Change emoji string
 koma2emoji = {
     Koma.empty: ":white_large_square:",
-    Koma.fu: "::arrow_up_small:",
+    Koma.fu: ":arrow_up_small:",
     Koma.kyosha: ":arrow_double_up:",
     Koma.keima: ":arrow_heading_up:",
     Koma.gin: ":arrow_upper_right:",
-    Koma.kin: ":arrow_up: ",
+    Koma.kin: ":arrow_up:",
     Koma.kaku: ":heavy_multiplication_x:",
     Koma.hisha: ":heavy_plus_sign:",
     Koma.gyoku: ":mahjong:",
     Koma.promoted_fu: ":sunglasses:",
     Koma.promoted_kyosha: ":grimacing:",
-    Koma.promoted_keima: ":joy: ",
+    Koma.promoted_keima: ":joy:",
     Koma.promoted_gin: ":money_mouth_face:",
-    Koma.promoted_kaku: ":rage3: ",
+    Koma.promoted_kaku: ":rage3:",
     Koma.promoted_hisha: ":innocent:",
 
     Koma.opponent_fu: ":arrow_down_small:",
@@ -69,15 +69,119 @@ koma2emoji = {
     Koma.opponent_promoted_hisha: ":ok_woman::skin-tone-6:"
 }
 
+# for test
+# TODO: remove this.
+start_board = [
+            [
+                Koma.opponent_kyosha,
+                Koma.opponent_keima,
+                Koma.opponent_gin,
+                Koma.opponent_kin,
+                Koma.opponent_gyoku,
+                Koma.opponent_kin,
+                Koma.opponent_gin,
+                Koma.opponent_keima,
+                Koma.opponent_kyosha,
+            ],
+            [
+                Koma.empty,
+                Koma.opponent_hisha,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.opponent_kaku,
+                Koma.empty,
+            ],
+            [
+                Koma.opponent_fu,
+                Koma.opponent_fu,
+                Koma.opponent_fu,
+                Koma.opponent_fu,
+                Koma.opponent_fu,
+                Koma.opponent_fu,
+                Koma.opponent_fu,
+                Koma.opponent_fu,
+                Koma.opponent_fu,
+            ],
+            [
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+            ],
+            [
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+            ],
+            [
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+            ],
+            [
+                Koma.fu,
+                Koma.fu,
+                Koma.fu,
+                Koma.fu,
+                Koma.fu,
+                Koma.fu,
+                Koma.fu,
+                Koma.fu,
+                Koma.fu,
+            ],
+            [
+                Koma.empty,
+                Koma.kaku,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.empty,
+                Koma.hisha,
+                Koma.empty,
+            ],
+            [
+                Koma.kyosha,
+                Koma.keima,
+                Koma.gin,
+                Koma.kin,
+                Koma.gyoku,
+                Koma.kin,
+                Koma.gin,
+                Koma.keima,
+                Koma.kyosha,
+            ],
+        ]
 
 class ShogiOutput:
     @staticmethod
     def make_board_emoji(board):
-        # TODO: Make board with emoji
         output_text = ""
         for x in range(9):
             for y in range(9):
-                output_text += koma2emoji[board["board"][x][y]]
+                # TODO : This is test code. Remove this after.
+                output_text += koma2emoji[start_board[x][y]]
+                #output_text += koma2emoji[board[x][y]]
             output_text += "\n"
 
         return output_text
