@@ -18,6 +18,13 @@ class ShogiManager:
             return shogi
         else:
             raise Exception()
+    def get_shogi(self, channel_id):
+        if channel_id in self.shogi:
+            return self.shogi[channel_id]
+        else:
+            return None
+    def is_exists(self, channel_id):
+        return channel_id in self.shogi
     def clear(self, channel_id):
         if channel_id in self.shogi:
             del self.shogi[channel_id]
@@ -41,6 +48,9 @@ class ShogiInput:
         else:
             return False
     @staticmethod
+    def exists(channel_id):
+        return ShogiInput.manager.is_exists(channel_id)
+    @staticmethod
     def koma_is_movable(channel_id, user_id, position, koma, sub_position, promote):
         # TODO: check can move with shogi module
         return True
@@ -54,10 +64,13 @@ class ShogiInput:
     @staticmethod
     def get_shogi_board(channel_id):
         # TODO:
+        shogi = ShogiInput.manager.get_shogi(channel_id)
+        if shogi is None:
+            return None
         return {
                    "first":[],
                    "second": [],
-                   "board": ShogiModule().board,
+                   "board": shogi.board,
                    "info": {
                        "first": {
                            "name": "millay",
@@ -76,4 +89,7 @@ class Shogi:
         self.id = uuid.uuid4().hex
     def move(from_x, from_y, to_x, to_y, promote):
         pass
+    @property
+    def board(self):
+        return self.shogi.board
 

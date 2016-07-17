@@ -68,6 +68,9 @@ koma_names_string_regex = "|".join(koma_names)
 @respond_to("([一二三四五六七八九123456789１２３４５６７８９]{2})("+koma_names_string_regex+")([上右下左]{1,2})?(成)?")
 def koma_move(message, position, koma, sub_position, promote):
     channel_id = message.body["channel"]
+    if not ShogiInput.exists(channel_id):
+        message.reply("start withから初めてね")
+        return
     own_id = message.body["user"]
     if ShogiInput.koma_is_movable(channel_id, own_id, position, koma, sub_position, promote):
         ShogiInput.move(position, koma, sub_position, promote)
