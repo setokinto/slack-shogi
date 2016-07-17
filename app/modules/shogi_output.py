@@ -175,13 +175,50 @@ start_board = [
 
 class ShogiOutput:
     @staticmethod
-    def make_board_emoji(board):
-        output_text = ""
+    def make_board_emoji(board, first_koma, second_koma):
+        # socond koma
+        # TODO : Insert player name.
+        output_text = "後手 ： "
+        cnt = 0
+        if second_koma:
+            for koma in second_koma:
+                cnt += 1
+                # if more than 7 a number of motigoma,
+                # go to next line.
+                if cnt == 7:
+                    output_text += "\n　　    "
+                    cnt = 1
+                output_text += koma2emoji[koma] + " "
+        else:
+            output_text += "持ち駒なし"
+
+        output_text += "\n\n"
+
+        # board
         for x in range(9):
             for y in range(9):
-                # TODO : This is test code. Remove this after.
+                # TODO : This is test code. Remove this code after.
                 output_text += koma2emoji[start_board[x][y]]
                 #output_text += koma2emoji[board[x][y]]
             output_text += "\n"
+        output_text += "\n"
+
+        # socond koma
+        # TODO : Insert player name.
+        output_text += "先手 : "
+        cnt = 0
+        if first_koma:
+            for koma in first_koma:
+                cnt += 1
+                # if more than 7 a number of motigoma,
+                # go to next line.
+                if cnt == 7:
+                    output_text += "\n　　    "
+                    cnt = 1
+                output_text += koma2emoji[koma] + " "
+        else:
+            output_text += "持ち駒なし"
+
+        output_text += "\n"
 
         return output_text
