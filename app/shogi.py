@@ -4,6 +4,7 @@ import re
 from slackbot.bot import respond_to
 
 from app.modules.shogi_input import ShogiInput
+from app.modules.shogi_output import ShogiOutput
 from app.slack_utils.user import User
 
 @respond_to('hey', re.IGNORECASE)
@@ -71,8 +72,7 @@ def koma_move(message, position, koma, sub_position, promote):
     if ShogiInput.koma_is_movable(channel_id, own_id, position, koma, sub_position, promote):
         ShogiInput.move(position, koma, sub_position, promote)
         board = ShogiInput.get_shogi_board(channel_id)
-        # TODO: use yossy's outputer
-        message.send("TODO: use yossy's shogi output module")
+        board_str = ShogiOutput.make_board_emoji(board)
+        message.send(board_str)
     else:
         message.reply("You cannot move this!!")
-
