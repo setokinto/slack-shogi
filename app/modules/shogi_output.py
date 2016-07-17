@@ -89,7 +89,7 @@ class ShogiOutput:
         # board
         for y in range(9):
             for x in range(9):
-                output_text += koma2emoji[board["board"][y][x]]
+                output_text += koma2emoji[board_info["board"][y][x]]
             output_text += "\n"
         output_text += "\n"
 
