@@ -87,14 +87,13 @@ class ShogiOutput:
         output_text += "\n\n"
 
         # board
-        for x in range(9):
-            for y in range(9):
-                output_text += koma2emoji[board["board"][x][y]]
+        for y in range(9):
+            for x in range(9):
+                output_text += koma2emoji[board["board"][y][x]]
             output_text += "\n"
         output_text += "\n"
 
         # socond koma
-        # TODO : Insert player name.
         output_text += "先手 {} ： ".format(board_info["info"]["first"]["name"])
         cnt = 0
         if board_info["first"]:
