@@ -72,7 +72,7 @@ class MockedChannel:
                 {
                     "ok": True,
                     "channel": {
-                        "id": "C024BE91L",
+                        "id": "C023BECGA",
                         "name": "fun",
                         "created": 1360782804,
                         "creator": "U024BE7LH",
@@ -81,7 +81,7 @@ class MockedChannel:
                         "is_member": True,
                         "is_starred": True,
                         "members": [
-                            "C023BECGA",    
+                            "U023BECGA",    
                         ],
                         "topic": {},
                         "purpose": {},
@@ -125,7 +125,7 @@ class UserTest(unittest.TestCase):
         exists = self.user.user_in_channel("U023BECGA", "C023BECGA")
         self.assertTrue(exists)
 
-    def test_user_in_channel_return_True_when_user_exists(self):
+    def test_user_in_channel_return_False_when_user_not_exists(self):
         notexists = self.user.user_in_channel("UNONONONONO", "C023BECGA")
         self.assertFalse(notexists)
 
