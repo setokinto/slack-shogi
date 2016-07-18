@@ -2,6 +2,8 @@
 import uuid
 from app.slack_utils.user import User
 from app.modules.shogi import Shogi as ShogiModule
+from app.modules.parse_input import ParseInput
+
 
 class ShogiManager:
     def __init__(self):
@@ -58,22 +60,34 @@ class ShogiInput:
     def clear(channel_id):
         ShogiInput.manager.clear(channel_id)
     @staticmethod
-    def move(position, koma, sub_position, promote):
-        # TODO:
-        return False
+    def move(movement_str, channel_id, user_id):
+        shogi = ShogiInput.manager.get_shogi(channel_id)
+        movement = ParseInput.parse(movement_str, shogi.shogi) # TODO: use Shogi object in this file and test
+        if movement == False:
+            return False
+        else:
+            from_x, from_y, to_x, to_y, promote, koma = movement
+
+        if from_x == -1 and from_y == -1 and shogi.droppable(koma, to_x, to_y):
+            shogi.drop(koma, to_x, to_y)
+            return True
+        elif shogi.movable(from_x, from_y, to_x, to_y, promote):
+            shogi.move(from_x, from_y, to_x, to_y, promote)
+            return True
+        else:
+            return False
     @staticmethod
     def basic_move(channel_id, from_x, from_y, to_x, to_y, promote):
         shogi = ShogiInput.manager.get_shogi(channel_id)
         shogi.move(from_x, from_y, to_x, to_y, promote)
     @staticmethod
     def get_shogi_board(channel_id):
-        # TODO:
         shogi = ShogiInput.manager.get_shogi(channel_id)
         if shogi is None:
             return None
         return {
-                   "first":[],
-                   "second": [],
+                   "first": shogi.shogi.first_tegoma,
+                   "second": shogi.shogi.second_tegoma,
                    "board": shogi.board,
                    "info": {
                        "first": {
@@ -82,7 +96,8 @@ class ShogiInput:
                        "second": {
                            "name": "not millay",
                        }
-                   }
+                   },
+                   "_shogi": shogi,
                }
 
 class Shogi:
@@ -93,6 +108,12 @@ class Shogi:
         self.id = uuid.uuid4().hex
     def move(self, from_x, from_y, to_x, to_y, promote):
         self.shogi.move(from_x, from_y, to_x, to_y, promote)
+    def drop(self, koma, to_x, to_y):
+        self.shogi.drop(koma, to_x, to_y)
+    def movable(self, from_x, from_y, to_x, to_y, promote):
+        return self.shogi.movable(from_x, from_y, to_x, to_y, promote)
+    def droppable(self, koma, to_x, to_y):
+        return self.shogi.droppable(koma, to_x, to_y)
     @property
     def board(self):
         return self.shogi.board

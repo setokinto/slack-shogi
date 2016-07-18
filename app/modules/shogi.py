@@ -56,6 +56,16 @@ class Koma(Enum):
             return Koma(self.value | 0x10)
         except ValueError:
             return self
+    def unpromote(self):
+        try:
+            return Koma(self.value & 0x2F)
+        except ValueError:
+            return self
+    def go_enemy(self):
+        if self.is_first():
+            return Koma(self.value + 0x20)
+        else:
+            return Koma(self.value - 0x20)
 
 class Shogi:
     # TODO: implement komaochi
@@ -170,6 +180,7 @@ class Shogi:
         koma = self.board[from_y][from_x]
         koma_for_komadai = self.board[to_y][to_x]
         if koma_for_komadai is not Koma.empty:
+            koma_for_komadai = koma_for_komadai.unpromote().go_enemy()
             if self.first:
                 self.first_tegoma.append(koma_for_komadai)
             else:
@@ -226,6 +237,7 @@ class Shogi:
         koma_for_komadai = self.board[to_y][to_x]
         self.board[to_y][to_x] = koma
         if koma_for_komadai is not Koma.empty:
+            koma_for_komadai = koma_for_komadai.unpromote().go_enemy()
             if self.first:
                 self.first_tegoma.append(koma_for_komadai)
             else:

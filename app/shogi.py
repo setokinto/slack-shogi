@@ -36,6 +36,9 @@ def start_shogi(message, opponent_name):
         message.reply("Error, sorry")
     else:
         message.reply("Shogi started: " + shogi.id)
+        board = ShogiInput.get_shogi_board(channel_id)
+        board_str = ShogiOutput.make_board_emoji(board)
+        message.send(board_str)
 
 koma_names = [
     "歩",
@@ -66,19 +69,33 @@ koma_names += list(map(lambda n: "成"+n, koma_names))
 koma_names_string_regex = "|".join(koma_names)
 
 @respond_to("([一二三四五六七八九123456789１２３４５６７８９]{2})("+koma_names_string_regex+")([上右下左]{1,2})?(成)?")
-def koma_move(message, position, koma, sub_position, promote):
+def koma_move(message, position, koma, sub_position=None, promote=None):
+    movement_str = "".join([x for x in [position, koma, sub_position, promote] if x is not None])
     channel_id = message.body["channel"]
     if not ShogiInput.exists(channel_id):
         message.reply("start withから初めてね")
         return
     own_id = message.body["user"]
-    if ShogiInput.koma_is_movable(channel_id, own_id, position, koma, sub_position, promote):
-        ShogiInput.move(position, koma, sub_position, promote)
+
+    if ShogiInput.move(movement_str, channel_id, own_id):
         board = ShogiInput.get_shogi_board(channel_id)
         board_str = ShogiOutput.make_board_emoji(board)
         message.send(board_str)
     else:
         message.reply("You cannot move this!!")
+        board = ShogiInput.get_shogi_board(channel_id)
+        board_str = ShogiOutput.make_board_emoji(board)
+        message.send(board_str)
+
+@respond_to("今?.*の?.*状態.*を?教.*え?て?")
+@respond_to("現局面.*")
+@respond_to("局面.*")
+@respond_to("board")
+def board_info(message):
+    channel_id = message.body["channel"]
+    board = ShogiInput.get_shogi_board(channel_id)
+    board_str = ShogiOutput.make_board_emoji(board)
+    message.send(board_str)
 
 @respond_to("([123456789][123456789][123456789][123456789]成?)")
 def koma_move_basic(message, movement):
