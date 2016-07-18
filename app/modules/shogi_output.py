@@ -1,38 +1,40 @@
 
 from app.modules.shogi import Koma
 
-# TODO : Change emoji string
-koma2emoji = {
-    Koma.empty: ":white_large_square:",
-    Koma.fu: ":arrow_up_small:",
-    Koma.kyosha: ":arrow_double_up:",
-    Koma.keima: ":arrow_heading_up:",
-    Koma.gin: ":arrow_upper_right:",
-    Koma.kin: ":arrow_up:",
-    Koma.kaku: ":heavy_multiplication_x:",
-    Koma.hisha: ":heavy_plus_sign:",
-    Koma.gyoku: ":mahjong:",
-    Koma.promoted_fu: ":sunglasses:",
-    Koma.promoted_kyosha: ":grimacing:",
-    Koma.promoted_keima: ":joy:",
-    Koma.promoted_gin: ":money_mouth_face:",
-    Koma.promoted_kaku: ":rage3:",
-    Koma.promoted_hisha: ":innocent:",
+emoji_prefix = "slackshogisss_"
+emoji_separetor = ":"
 
-    Koma.opponent_fu: ":arrow_down_small:",
-    Koma.opponent_kyosha: ":arrow_double_down:",
-    Koma.opponent_keima: ":arrow_heading_down:",
-    Koma.opponent_gin: ":arrow_lower_right:",
-    Koma.opponent_kin: ":arrow_down:",
-    Koma.opponent_kaku: ":x:",
-    Koma.opponent_hisha: ":latin_cross:",
-    Koma.opponent_gyoku: ":mahjong:",
-    Koma.opponent_promoted_fu: ":ok_woman:",
-    Koma.opponent_promoted_kyosha: ":ok_woman::skin-tone-2:",
-    Koma.opponent_promoted_keima: ":ok_woman::skin-tone-3:",
-    Koma.opponent_promoted_gin: ":ok_woman::skin-tone-4:",
-    Koma.opponent_promoted_kaku: ":ok_woman::skin-tone-5:",
-    Koma.opponent_promoted_hisha: ":ok_woman::skin-tone-6:"
+koma2emoji = {
+    Koma.empty: emoji_separetor + emoji_prefix + "mu" + emoji_separetor,
+    Koma.fu: emoji_separetor + emoji_prefix + "fu" + emoji_separetor,
+    Koma.kyosha: emoji_separetor + emoji_prefix + "kyou" + emoji_separetor ,
+    Koma.keima: emoji_separetor + emoji_prefix + "kei" + emoji_separetor,
+    Koma.gin: emoji_separetor + emoji_prefix + "gin" + emoji_separetor,
+    Koma.kin: emoji_separetor + emoji_prefix + "kin" + emoji_separetor,
+    Koma.kaku: emoji_separetor + emoji_prefix + "kaku" + emoji_separetor,
+    Koma.hisha: emoji_separetor + emoji_prefix + "hi" + emoji_separetor,
+    Koma.gyoku: emoji_separetor + emoji_prefix + "ou" + emoji_separetor,
+    Koma.promoted_fu: emoji_separetor + emoji_prefix + "tokin" + emoji_separetor,
+    Koma.promoted_kyosha: emoji_separetor + emoji_prefix + "narikyou" + emoji_separetor,
+    Koma.promoted_keima: emoji_separetor + emoji_prefix + "narikei" + emoji_separetor,
+    Koma.promoted_gin: emoji_separetor + emoji_prefix + "narigin" + emoji_separetor,
+    Koma.promoted_kaku: emoji_separetor + emoji_prefix + "uma" + emoji_separetor,
+    Koma.promoted_hisha: emoji_separetor + emoji_prefix + "ryu" + emoji_separetor,
+
+    Koma.opponent_fu: emoji_separetor + emoji_prefix + "fu_enemy" + emoji_separetor,
+    Koma.opponent_kyosha: emoji_separetor + emoji_prefix + "kyou_enemy" + emoji_separetor,
+    Koma.opponent_keima: emoji_separetor + emoji_prefix + "kei_enemy" + emoji_separetor,
+    Koma.opponent_gin: emoji_separetor + emoji_prefix + "gin_enemy" + emoji_separetor,
+    Koma.opponent_kin: emoji_separetor + emoji_prefix + "kin_enemy" + emoji_separetor,
+    Koma.opponent_kaku: emoji_separetor + emoji_prefix + "kaku_enemy" + emoji_separetor,
+    Koma.opponent_hisha: emoji_separetor + emoji_prefix + "hi_enemy" + emoji_separetor,
+    Koma.opponent_gyoku: emoji_separetor + emoji_prefix + "gyoku" + emoji_separetor,
+    Koma.opponent_promoted_fu: emoji_separetor + emoji_prefix + "tokin_enemy" + emoji_separetor,
+    Koma.opponent_promoted_kyosha: emoji_separetor + emoji_prefix + "narikyou_enemy" + emoji_separetor,
+    Koma.opponent_promoted_keima: emoji_separetor + emoji_prefix + "narikei_enemy" + emoji_separetor,
+    Koma.opponent_promoted_gin: emoji_separetor + emoji_prefix + "narigin_enemy" + emoji_separetor,
+    Koma.opponent_promoted_kaku: emoji_separetor + emoji_prefix + "uma_enemy" + emoji_separetor,
+    Koma.opponent_promoted_hisha: emoji_separetor + emoji_prefix + "ryu_enemy" + emoji_separetor,
 }
 
 class ShogiOutput:
