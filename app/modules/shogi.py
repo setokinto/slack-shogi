@@ -179,7 +179,6 @@ class Shogi:
         self.first = not self.first
 
     def movable(self, from_x, from_y, to_x, to_y, promote):
-        # TODO: use promote and judge also using promote
         board = self.board
         from_koma = board[from_y][from_x]
         to_koma = board[to_y][to_x]
@@ -191,7 +190,11 @@ class Shogi:
         if not promote:
             if (from_koma is Koma.fu or from_koma is Koma.kyosha) and to_y == 0:
                 return False
+            if from_koma is Koma.keima and to_y <= 1:
+                return False
             if (from_koma is Koma.opponent_fu or from_koma is Koma.opponent_kyosha) and to_y == 8:
+                return False
+            if from_koma is Koma.opponent_keima and 7 <= to_y:
                 return False
         if promote:
             if not from_koma.can_promote():

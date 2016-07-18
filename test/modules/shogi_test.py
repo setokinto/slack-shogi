@@ -102,11 +102,11 @@ class ShogiTest(unittest.TestCase):
         shogi.board = [
                 [Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.promoted_fu, Koma.hisha, Koma.empty, Koma.kin],
                 [Koma.fu, Koma.kyosha, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.gyoku],
-                [Koma.opponent_fu, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
+                [Koma.opponent_fu, Koma.empty, Koma.empty, Koma.keima, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
                 [Koma.empty, Koma.empty, Koma.gin, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
                 [Koma.empty, Koma.kyosha, Koma.opponent_kyosha, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
                 [Koma.empty, Koma.empty, Koma.opponent_gin, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
-                [Koma.fu, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
+                [Koma.fu, Koma.empty, Koma.empty, Koma.opponent_keima, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
                 [Koma.opponent_fu, Koma.opponent_kyosha, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.opponent_gyoku],
                 [Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.opponent_promoted_fu, Koma.opponent_hisha, Koma.empty, Koma.opponent_kin],
         ]
@@ -128,6 +128,26 @@ class ShogiTest(unittest.TestCase):
         # 99 fu naru
         movable = shogi.movable(0, 7, 0, 8, True)
         self.assertTrue(movable)
+
+        shogi.first = True
+        # 71 kei narazu
+        movable = shogi.movable(3, 2, 2, 0, False)
+        self.assertFalse(movable)
+        # 71 kei naru
+        movable = shogi.movable(3, 2, 2, 0, True)
+        self.assertTrue(movable)
+
+        shogi.first = False
+        # 79 kei narazu
+        movable = shogi.movable(3, 6, 2, 8, False)
+        self.assertFalse(movable)
+        # 79 kei naru
+        movable = shogi.movable(3, 6, 2, 8, True)
+        self.assertTrue(movable)
+
+
+
+        
 
         shogi.first = True
         # 81 kyo narazu
