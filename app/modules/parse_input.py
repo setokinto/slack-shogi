@@ -1,17 +1,17 @@
 
 import re
-from app.module.shogi import Koma, Shogi
+from app.modules.shogi import Koma
 
 str2info = {
-    "一" : 0,　"１" : 0,　"1" : 0,
-    "二" : 1,　"２" : 1,　"2" : 1,
-    "三" : 2,　"３" : 2,　"3" : 2,
-    "四" : 3,　"４" : 3,　"4" : 3,
-    "五" : 4,　"５" : 4,　"5" : 4,
-    "六" : 5,　"６" : 5,　"6" : 5,
-    "七" : 6,　"７" : 6,　"7" : 6,
-    "八" : 7,　"８" : 7,　"8" : 7,
-    "九" : 8,　"９" : 8,　"9" : 8,
+    "一": 0, "１": 0, "1": 0,
+    "二": 1, "２": 1, "2": 1,
+    "三": 2, "３": 2, "3": 2,
+    "四": 3, "４": 3, "4": 3,
+    "五": 4, "５": 4, "5": 4,
+    "六": 5, "６": 5, "6": 5,
+    "七": 6, "７": 6, "7": 6,
+    "八": 7, "８": 7, "8": 7,
+    "九": 8, "９": 8, "9": 8
 }
 
 str2koma = {
@@ -160,21 +160,18 @@ class ParseInput:
 
 
         promote = False
-        if input_str[-1]　== ("成"):
-            promote = True
-            input_str = input_str.replace("成", "")
+        if input_str[-1] == ("成"):
+            if input_str[-2] == ("不"):
+                input_str = input_str.replace("不成", "")
+            else:
+                # TODO : Detect to be able to promote
+                promote = True
+                input_str = input_str.replace("成", "")
 
         if input_str.find("打"):
             from_x = -1
             from_y = -1
 
-        """
-        [
-            [(0,0),(1,0),(2,0)],
-            [(0,1),(1,1),(2,1)],
-            [(0,2),(1,2),(2,2)]
-        ]
-        """
         else:
             is_first_turn = shogi.first
 
