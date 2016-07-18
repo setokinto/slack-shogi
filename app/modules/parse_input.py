@@ -171,129 +171,137 @@ class ParseInput:
         if input_str.find("打") != -1:
             from_x = -1
             from_y = -1
-
-        else:
-            is_first_turn = shogi.first
-
-            # if in this block, input_str is only koma name
             if input_str in koma_names:
                 if is_first_turn:
                     koma = str2koma[input_str]
                 else:
                     koma = str2oppkoma[input_str]
-
-                candidate_komas = shogi.find_koma(koma)
-                movable_komas = []
-                for candidate_koma in candidate_komas:
-                    if shogi.movable(candidate_koma[0],
-                                     candidate_koma[1],
-                                     to_x, to_y, promote):
-                        movable_komas.append(candidate_koma)
-                print (candidate_komas)
-
-                if len(movable_komas) == 0:
-                    return False
-
-                elif len(movable_komas) == 1:
-                    from_x = movable_komas[0][0]
-                    from_y = movable_komas[0][1]
-
-                else:
-                    turn = is_first_turn  # for pep
-                    # "上"
-                    if from_flag == 1:
-                        for t in movable_komas: # t => "t"arget
-                            if (turn and t[1] > to_y) or \
-                               (not turn and t[1] < to_y):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # "右"
-                    elif from_flag == 2:
-                        for t in movable_komas:
-                            if (turn and t[0] > to_x) or \
-                               (not turn and t[0] < to_x):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # "右上"
-                    elif from_flag == 3:
-                        for t in movable_komas:
-                            if (turn and t[0] > to_x and t[1] > to_y) or \
-                               (not turn and t[0] < to_x and t[1] < to_y):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # "引"
-                    elif from_flag == 4:
-                        for t in movable_komas:
-                            if (turn and t[1] < to_y) or \
-                               (not turn and t[1] > to_y):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # "右引"
-                    elif from_flag == 6:
-                        for t in movable_komas:
-                            if (turn and t[0] > to_x and t[1] < to_y) or \
-                               (not turn and t[0] < to_x and t[1] > to_y):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # "左"
-                    elif from_flag == 8:
-                        for t in movable_komas:
-                            if (turn and t[0] < to_x) or \
-                               (not turn and t[0] > to_x):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # "左上"
-                    elif from_flag == 9:
-                        for t in movable_komas:
-                            if (turn and t[0] < to_x and t[1] > to_y) or \
-                               (not turn and t[0] > to_x and t[1] < to_y):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # "左引"
-                    elif from_flag == 12:
-                        for t in movable_komas:
-                            if (turn and t[0] < to_x and t[1] < to_y) or \
-                               (not turn and t[0] > to_x and t[1] > to_y):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # "寄"
-                    elif from_flag == 16:
-                        for t in movable_komas:
-                            if (t[1] == to_y):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # "直"
-                    elif from_flag == 17:
-                        for t in movable_komas:
-                            if (t[0] == to_x):
-                                from_x, from_y = t
-                                from_flag = 0
-                                break
-
-                    # TODO : Send Error Message
-                    if from_flag != 0:
-                        return False
-
             else:
                 # TODO : Send Error Message
                 return False
+            return (from_x, from_y, to_x, to_y, promote, koma)
 
-        return (from_x, from_y, to_x, to_y, promote)
+
+        is_first_turn = shogi.first
+        if not input_str in koma_names:
+            # TODO : Send Error Message
+            return False
+
+        # if in this block, input_str is only koma name
+        if is_first_turn:
+            koma = str2koma[input_str]
+        else:
+            koma = str2oppkoma[input_str]
+
+        candidate_komas = shogi.find_koma(koma)
+        movable_komas = []
+        for candidate_koma in candidate_komas:
+            if shogi.movable(candidate_koma[0],
+                             candidate_koma[1],
+                             to_x, to_y, promote):
+                movable_komas.append(candidate_koma)
+
+        if len(movable_komas) == 0:
+            # TODO : Send Error Message
+            return False
+
+        elif len(movable_komas) == 1:
+            from_x = movable_komas[0][0]
+            from_y = movable_komas[0][1]
+
+        else:
+            turn = is_first_turn  # for pep
+            # "上"
+            if from_flag == 1:
+                for t in movable_komas: # t => "t"arget
+                    if (turn and t[1] > to_y) or \
+                       (not turn and t[1] < to_y):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # "右"
+            elif from_flag == 2:
+                for t in movable_komas:
+                    if (turn and t[0] > to_x) or \
+                       (not turn and t[0] < to_x):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # "右上"
+            elif from_flag == 3:
+                for t in movable_komas:
+                    if (turn and t[0] > to_x and t[1] > to_y) or \
+                       (not turn and t[0] < to_x and t[1] < to_y):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # "引"
+            elif from_flag == 4:
+                for t in movable_komas:
+                    if (turn and t[1] < to_y) or \
+                       (not turn and t[1] > to_y):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # "右引"
+            elif from_flag == 6:
+                for t in movable_komas:
+                    if (turn and t[0] > to_x and t[1] < to_y) or \
+                       (not turn and t[0] < to_x and t[1] > to_y):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # "左"
+            elif from_flag == 8:
+                for t in movable_komas:
+                    if (turn and t[0] < to_x) or \
+                       (not turn and t[0] > to_x):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # "左上"
+            elif from_flag == 9:
+                for t in movable_komas:
+                    if (turn and t[0] < to_x and t[1] > to_y) or \
+                       (not turn and t[0] > to_x and t[1] < to_y):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # "左引"
+            elif from_flag == 12:
+                for t in movable_komas:
+                    if (turn and t[0] < to_x and t[1] < to_y) or \
+                       (not turn and t[0] > to_x and t[1] > to_y):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # "寄"
+            elif from_flag == 16:
+                for t in movable_komas:
+                    if (t[1] == to_y):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # "直"
+            elif from_flag == 17:
+                for t in movable_komas:
+                    if (t[0] == to_x):
+                        from_x, from_y = t
+                        from_flag = 0
+                        break
+
+            # TODO : Send Error Message
+            if from_flag != 0:
+                return False
+
+
+        return (from_x, from_y, to_x, to_y, promote, koma)
