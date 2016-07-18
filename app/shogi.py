@@ -97,6 +97,21 @@ def board_info(message):
     board_str = ShogiOutput.make_board_emoji(board)
     message.send(board_str)
 
+@respond_to(".*降参.*")
+@respond_to(".*resign.*")
+@respond_to(".*負けました.*")
+@respond_to(".*まけました.*")
+@respond_to(".*まいりました.*")
+@respond_to(".*参りました.*")
+@respond_to(".*ありません.*")
+def resign(message):
+    channel_id = message.body["channel"]
+    message.send("最終局面")
+    board = ShogiInput.get_shogi_board(channel_id)
+    board_str = ShogiOutput.make_board_emoji(board)
+    message.send(board_str)
+    ShogiInput.clear(channel_id)
+
 @respond_to("([123456789][123456789][123456789][123456789]成?)")
 def koma_move_basic(message, movement):
     from_x = 9-int(movement[0])
