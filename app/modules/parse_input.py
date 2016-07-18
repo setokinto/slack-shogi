@@ -107,21 +107,51 @@ class ParseInput:
         """
         parse input text and get (from, to) Coordinate.
         """
+        is_first_turn = shogi.first
 
-        # TODO : "同"という表現への対応
-        if input_str[0] in str2info and input_str[0] in str2info:
-            to_x = transposition_num(str2info[input_str[0]])
-            to_y = str2info[input_str[1]]
-        else:
-            # TODO : Send Error Message
+        def get_koma():
+            # input_str is only koma name
+            if input_str in koma_names:
+                if is_first_turn:
+                    koma = str2koma[input_str]
+                else:
+                    koma = str2oppkoma[input_str]
+                return koma
             return False
 
-        slice_idx = 2
-        if input_str[slice_idx] == "同":
-            slice_idx = 3
-        input_str = input_str[slice_idx:]
+        # promote
+        promote = False
+        if input_str[-1] == ("成"):
+            if input_str.find("打") != -1:
+                return False
+
+            if input_str[-2] == ("不"):
+                input_str = input_str.replace("不成", "")
+            else:
+                # TODO : Detect to be able to promote
+                promote = True
+                input_str = input_str.replace("成", "")
+
+        # same
+        if input_str.find("同") != -1:
+            idx = input_str.find("同") + 1
+            input_str = input_str[idx:]
+            to_x = shogi.last_move_x
+            to_y = shogi.last_move_y
+
+        # get to_x, to_y from text
+        else:
+            if input_str[0] in str2info and input_str[0] in str2info:
+                to_x = transposition_num(str2info[input_str[0]])
+                to_y = str2info[input_str[1]]
+            else:
+                # TODO : Send Error Message
+                return False
+
+            input_str = input_str[2:] # remove number of axis
 
 
+        # setting from flag
         from_flag = 0
         if input_str.find("上") != -1:
             from_flag = 1
@@ -158,41 +188,21 @@ class ParseInput:
             from_flag = 17
             input_str = input_str.replace("直", "")
 
-
-        promote = False
-        if input_str[-1] == ("成"):
-            if input_str[-2] == ("不"):
-                input_str = input_str.replace("不成", "")
-            else:
-                # TODO : Detect to be able to promote
-                promote = True
-                input_str = input_str.replace("成", "")
-
+        # drop
         if input_str.find("打") != -1:
             from_x = -1
             from_y = -1
-            if input_str in koma_names:
-                if is_first_turn:
-                    koma = str2koma[input_str]
-                else:
-                    koma = str2oppkoma[input_str]
+            input_str = input_str.replace("打", "")
+            koma = get_koma()
+            if shogi.droppable(koma, to_x, to_y):
+                return (from_x, from_y, to_x, to_y, promote, koma)
             else:
-                # TODO : Send Error Message
                 return False
-            return (from_x, from_y, to_x, to_y, promote, koma)
-
-
-        is_first_turn = shogi.first
-        if not input_str in koma_names:
-            # TODO : Send Error Message
-            return False
 
         # if in this block, input_str is only koma name
-        if is_first_turn:
-            koma = str2koma[input_str]
-        else:
-            koma = str2oppkoma[input_str]
-
+        koma = get_koma()
+        if not koma:
+            return False
         candidate_komas = shogi.find_koma(koma)
         movable_komas = []
         for candidate_koma in candidate_komas:
@@ -302,6 +312,5 @@ class ParseInput:
             # TODO : Send Error Message
             if from_flag != 0:
                 return False
-
-
         return (from_x, from_y, to_x, to_y, promote, koma)
+
