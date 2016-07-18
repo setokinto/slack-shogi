@@ -28,7 +28,7 @@ koma2emoji = {
     Koma.opponent_kin: emoji_separetor + emoji_prefix + "kin_enemy" + emoji_separetor,
     Koma.opponent_kaku: emoji_separetor + emoji_prefix + "kaku_enemy" + emoji_separetor,
     Koma.opponent_hisha: emoji_separetor + emoji_prefix + "hi_enemy" + emoji_separetor,
-    Koma.opponent_gyoku: emoji_separetor + emoji_prefix + "gyoku" + emoji_separetor,
+    Koma.opponent_gyoku: emoji_separetor + emoji_prefix + "gyoku_enemy" + emoji_separetor,
     Koma.opponent_promoted_fu: emoji_separetor + emoji_prefix + "tokin_enemy" + emoji_separetor,
     Koma.opponent_promoted_kyosha: emoji_separetor + emoji_prefix + "narikyou_enemy" + emoji_separetor,
     Koma.opponent_promoted_keima: emoji_separetor + emoji_prefix + "narikei_enemy" + emoji_separetor,
@@ -59,7 +59,7 @@ class ShogiOutput:
         # board
         for y in range(9):
             for x in range(9):
-                output_text += koma2emoji[board["board"][y][x]]
+                output_text += koma2emoji[board_info["board"][y][x]]
             output_text += "\n"
         output_text += "\n"
 
