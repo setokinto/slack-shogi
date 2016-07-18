@@ -6,14 +6,35 @@ class ShogiTest(unittest.TestCase):
         pass
 
     def test_shogi_input_is_initable(self):
-        shogi = ShogiInput.init("channel_id", ["user1", "user2"])
+        shogi = ShogiInput.init("channel_id", [{
+                "id": "user1",
+                "name": "user1name",
+            }, {
+                "id": "user2",
+                "name": "user2name",
+            }
+        ])
         self.assertEqual(shogi.channel_id, "channel_id")
 
-        shogi = ShogiInput.init("channel_id", ["user1", "user2"])
+        shogi = ShogiInput.init("channel_id", [{
+                "id": "user1",
+                "name": "user1name",
+            }, {
+                "id": "user2",
+                "name": "user2name",
+            }
+        ])
         self.assertIsNone(shogi)
 
         ShogiInput.clear("channel_id")
-        shogi = ShogiInput.init("channel_id", ["user1", "user2"])
+        shogi = ShogiInput.init("channel_id",[{
+                "id": "user1",
+                "name": "user1name",
+            }, {
+                "id": "user2",
+                "name": "user2name",
+            }
+        ])
         self.assertEqual(shogi.channel_id, "channel_id")
 
 

@@ -27,9 +27,13 @@ def start_shogi(message, opponent_name):
         message.reply("Error, sorry. Opponent is not found in this channel")
         return
 
-    shogi = ShogiInput.init(channel_id=channel_id, user_ids=[
-        own_id,
-        opponent_id,
+    shogi = ShogiInput.init(channel_id=channel_id, users=[{
+            "id": own_id,
+            "name": user.id_to_username(own_id),
+            }, {
+            "id": opponent_id,
+            "name": user.id_to_username(opponent_id),
+        }
     ])
 
     if shogi is None:

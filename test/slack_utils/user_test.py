@@ -110,6 +110,13 @@ class UserTest(unittest.TestCase):
         user_id2 = self.user.username_to_id("bobby2")
         self.assertEqual(user_id2, "U023BECGA")
 
+    def test_find_username_from_userid(self):
+        username = self.user.id_to_username("U023BECGF")
+        self.assertEqual(username, "bobby")
+
+        username = self.user.id_to_username("U023BECGA")
+        self.assertEqual(username, "bobby2")
+
     def test_return_None_non_exists_user_name(self):
         user_id = self.user.username_to_id("not_bobby")
         self.assertEqual(user_id, None)        
