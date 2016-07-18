@@ -123,17 +123,17 @@ class ParseInput:
 
 
         from_flag = 0
-        if input_str.find("上"):
+        if input_str.find("上") != -1:
             from_flag = 1
             input_str = input_str.replace("上", "")
 
-        if input_str.find("右"):
+        if input_str.find("右") != -1:
             from_flag += 2
             input_str = input_str.replace("右", "")
 
         # 3 => 右上
 
-        if input_str.find("引"):
+        if input_str.find("引") != -1:
             from_flag += 4
             input_str = input_str.replace("引", "")
 
@@ -141,7 +141,7 @@ class ParseInput:
         # 6 => 右引
         # 7 => None
 
-        if input_str.find("左"):
+        if input_str.find("左") != -1:
             from_flag += 8
             input_str = input_str.replace("左", "")
 
@@ -150,11 +150,11 @@ class ParseInput:
         # 12 => 左引
         # 13~15 => None
 
-        if input_str.find("寄"):
+        if input_str.find("寄") != -1:
             from_flag = 16
             input_str = input_str.replace("寄", "")
 
-        if input_str.find("直"):
+        if input_str.find("直") != -1:
             from_flag = 17
             input_str = input_str.replace("直", "")
 
@@ -186,11 +186,14 @@ class ParseInput:
                 movable_komas = []
                 for candidate_koma in candidate_komas:
                     if shogi.movable(candidate_koma[0],
-                                     candidata_koma[1],
+                                     candidate_koma[1],
                                      to_x, to_y, promote):
                         movable_komas.append(candidate_koma)
 
-                if len(movable_komas) == 1:
+                if len(movable_komas) == 0:
+                    return False
+
+                elif len(movable_komas) == 1:
                     from_x = movable_komas[0][0]
                     from_y = movable_komas[0][1]
 
@@ -202,7 +205,9 @@ class ParseInput:
                             if (turn and t[1] > to_y) or \
                                (not turn and t[1] < to_y):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
+
 
                     # "右"
                     elif from_flag == 2:
@@ -210,6 +215,7 @@ class ParseInput:
                             if (turn and t[0] > to_x) or \
                                (not turn and t[0] < to_x):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
 
                     # "右上"
@@ -218,6 +224,7 @@ class ParseInput:
                             if (turn and t[0] > to_x and t[1] > to_y) or \
                                (not turn and t[0] < to_x and t[1] < to_y):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
 
                     # "引"
@@ -226,6 +233,7 @@ class ParseInput:
                             if (turn and t[1] < to_y) or \
                                (not turn and t[1] > to_y):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
 
                     # "右引"
@@ -234,6 +242,7 @@ class ParseInput:
                             if (turn and t[0] > to_x and t[1] < to_y) or \
                                (not turn and t[0] < to_x and t[1] > to_y):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
 
                     # "左"
@@ -242,6 +251,7 @@ class ParseInput:
                             if (turn and t[0] < to_x) or \
                                (not turn and t[0] > to_x):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
 
                     # "左上"
@@ -250,6 +260,7 @@ class ParseInput:
                             if (turn and t[0] < to_x and t[1] > to_y) or \
                                (not turn and t[0] > to_x and t[1] < to_y):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
 
                     # "左引"
@@ -258,28 +269,31 @@ class ParseInput:
                             if (turn and t[0] < to_x and t[1] < to_y) or \
                                (not turn and t[0] > to_x and t[1] > to_y):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
 
                     # "寄"
                     elif from_flag == 16:
                         for t in movable_komas:
-                            if (turn and t[0] == to_x):
+                            if (t[0] == to_x):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
 
                     # "直"
                     elif from_flag == 17:
                         for t in movable_komas:
-                            if (turn and t[1] == to_y):
+                            if (t[1] == to_y):
                                 from_x, from_y = t
+                                from_flag = 0
                                 break
 
                     # TODO : Send Error Message
-                    return False
+                    if from_flag != 0:
+                        return False
 
             else:
                 # TODO : Send Error Message
-                #return False
-                return input_str
+                return False
 
         return (from_x, from_y, to_x, to_y, promote)

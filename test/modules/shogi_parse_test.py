@@ -1,5 +1,5 @@
 import unittest
-from app.modules.shogi import Shogi
+from app.modules.shogi import Shogi, Koma
 from app.modules.parse_input import ParseInput
 
 class ShogiTest(unittest.TestCase):
@@ -24,9 +24,11 @@ class ShogiTest(unittest.TestCase):
         self.assertEqual(ParseInput.parse("58金直", shogi), False)
         self.assertEqual(ParseInput.parse("58金寄", shogi), False)
         self.assertEqual(ParseInput.parse("58金引", shogi), False)
-        shogi.move(4, 8, 4, 4, False)
+        shogi.move(4, 8, 5, 7, False)
         shogi.move(5, 8, 4, 8, False)
         shogi.first = True
+        self.assertIn([3, 8], shogi.find_koma(Koma.kin))
+        self.assertIn([4, 8], shogi.find_koma(Koma.kin))
         self.assertEqual(ParseInput.parse("58金直", shogi), (4,8, 4,7, False))
         self.assertEqual(ParseInput.parse("58金左", shogi), (3,8, 4,7, False))
         self.assertEqual(ParseInput.parse("58金右", shogi), False)
@@ -35,8 +37,8 @@ class ShogiTest(unittest.TestCase):
 
     def test_parse3(self):
         shogi = Shogi()
-        shogi.move(2, 6, 2, 5, False)
-        shogi.move(6, 2, 6, 3, False)
+        shogi.move(2, 6, 2, 5, False) # 76歩
+        shogi.move(6, 2, 6, 3, False) # 34歩
         self.assertEqual(ParseInput.parse("22角成", shogi), (1,7, 7,1, True))
         self.assertEqual(ParseInput.parse("22角不成", shogi),(1,7, 7,1, False))
         self.assertEqual(ParseInput.parse("22角", shogi), (1,7, 7,1, False))
