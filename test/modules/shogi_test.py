@@ -344,4 +344,14 @@ class ShogiTest(unittest.TestCase):
 
         koma_positions = shogi.find_koma(Koma.hisha)
         self.assertIn([7, 7], koma_positions)
+    
+    def test_last_move(self):
+        shogi = Shogi()
+        shogi.second_tegoma = [Koma.opponent_fu]
+        shogi.move(0, 6, 0, 5, False)
+        self.assertEqual(shogi.last_move_x, 0)
+        self.assertEqual(shogi.last_move_y, 5)
+        shogi.drop(Koma.opponent_fu, 5, 5)
+        self.assertEqual(shogi.last_move_x, 5)
+        self.assertEqual(shogi.last_move_y, 5)
 

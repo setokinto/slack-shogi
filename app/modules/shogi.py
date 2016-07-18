@@ -180,7 +180,8 @@ class Shogi:
         else:
             self.board[to_y][to_x] = koma
         self.first = not self.first
-        self.last_move_x
+        self.last_move_x = to_x
+        self.last_move_y = to_y
 
     def movable(self, from_x, from_y, to_x, to_y, promote):
         board = self.board
@@ -230,6 +231,8 @@ class Shogi:
             else:
                 self.second_tegoma.append(koma_for_komadai)
         self.first = not self.first
+        self.last_move_x = to_x
+        self.last_move_y = to_y
 
     def droppable(self, koma, to_x, to_y):
         if self.first:
