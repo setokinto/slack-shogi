@@ -194,7 +194,6 @@ class ParseInput:
             from_y = -1
             input_str = input_str.replace("打", "")
             koma = get_koma()
-            return (input_str, to_x, to_y, koma)
             if shogi.droppable(koma, to_x, to_y):
                 return (from_x, from_y, to_x, to_y, promote, koma)
             else:
@@ -313,5 +312,5 @@ class ParseInput:
             # TODO : Send Error Message
             if from_flag != 0:
                 return False
-
         return (from_x, from_y, to_x, to_y, promote, koma)
+

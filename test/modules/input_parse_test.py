@@ -52,7 +52,7 @@ class ShogiTest(unittest.TestCase):
 
     def test_parse_drop(self):
         shogi = Shogi()
-        shogi.board[0][2] = Koma.empty
+        shogi.board[6][0] = Koma.empty
         shogi.first_tegoma = [Koma.fu]
         shogi.first = True
         self.assertEqual(ParseInput.parse("95歩打", shogi), (-1, -1, 0, 4, False, Koma.fu))
