@@ -68,3 +68,9 @@ class ShogiTest(unittest.TestCase):
         shogi = Shogi()
         shogi.move(5, 8, 4, 1, False) # 49の金を一気に52へ
         self.assertEqual(ParseInput.parse("同金右", shogi), (3, 0, 4, 1, False, Koma.opponent_kin))
+
+    @unittest.skip("see https://github.com/setokinto/slack-shogi/issues/19")
+    def test_parse_ambiguous(self):
+        shogi = Shogi()
+        self.assertEqual(ParseInput.parse("58金", shogi), False)
+
