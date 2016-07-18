@@ -64,6 +64,12 @@ class ShogiInput:
     @staticmethod
     def move(movement_str, channel_id, user_id):
         shogi = ShogiInput.manager.get_shogi(channel_id)
+        if shogi.first:
+            if not shogi.first_user_id == user_id:
+                return False # TODO: DifferentUserException
+        else:
+            if not shogi.second_user_id == user_id:
+                return False # TODO: DifferentUserException
         movement = ParseInput.parse(movement_str, shogi.shogi) # TODO: use Shogi object in this file and test
         if movement == False:
             return False
