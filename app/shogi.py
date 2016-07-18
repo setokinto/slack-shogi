@@ -7,10 +7,6 @@ from app.modules.shogi_input import ShogiInput
 from app.modules.shogi_output import ShogiOutput
 from app.slack_utils.user import User
 
-@respond_to('hey', re.IGNORECASE)
-def res_hey(message):
-    message.reply("Hey")
-
 @respond_to('start with <?@?([\d\w_-]+)>?')
 def start_shogi(message, opponent_name):
     slacker = message._client.webapi
@@ -115,20 +111,4 @@ def resign(message):
     board_str = ShogiOutput.make_board_emoji(board)
     message.send(board_str)
     ShogiInput.clear(channel_id)
-
-@respond_to("([123456789][123456789][123456789][123456789]成?)")
-def koma_move_basic(message, movement):
-    from_x = 9-int(movement[0])
-    from_y = int(movement[1])-1
-    to_x = 9-int(movement[2])
-    to_y = int(movement[3])-1
-    promote = len(movement) >= 5
-    channel_id = message.body["channel"]
-    if not ShogiInput.exists(channel_id):
-        message.reply("start withから初めてね")
-        return
-    ShogiInput.basic_move(channel_id, from_x, from_y, to_x, to_y, promote)
-    board = ShogiInput.get_shogi_board(channel_id)
-    board_str = ShogiOutput.make_board_emoji(board)
-    message.send(board_str)
 
