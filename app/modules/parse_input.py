@@ -189,6 +189,7 @@ class ParseInput:
                                      candidate_koma[1],
                                      to_x, to_y, promote):
                         movable_komas.append(candidate_koma)
+                print (candidate_komas)
 
                 if len(movable_komas) == 0:
                     return False
@@ -207,7 +208,6 @@ class ParseInput:
                                 from_x, from_y = t
                                 from_flag = 0
                                 break
-
 
                     # "右"
                     elif from_flag == 2:
@@ -275,7 +275,7 @@ class ParseInput:
                     # "寄"
                     elif from_flag == 16:
                         for t in movable_komas:
-                            if (t[0] == to_x):
+                            if (t[1] == to_y):
                                 from_x, from_y = t
                                 from_flag = 0
                                 break
@@ -283,7 +283,7 @@ class ParseInput:
                     # "直"
                     elif from_flag == 17:
                         for t in movable_komas:
-                            if (t[1] == to_y):
+                            if (t[0] == to_x):
                                 from_x, from_y = t
                                 from_flag = 0
                                 break
