@@ -45,6 +45,12 @@ class Koma(Enum):
         if self is Koma.opponent_keima:
             return True
         return False
+    def can_promote(self):
+        if self is Koma.kin or self is Koma.gyoku or self is Koma.opponent_kin or self is Koma.opponent_gyoku:
+            return False
+        if self.value & 0x10:
+            return False
+        return True
 
 class ShogiCantMoveException(Exception):
     pass
@@ -182,10 +188,23 @@ class Shogi:
             return False
         if not self.first == from_koma.is_first():
             return False
+        if not promote:
+            if (from_koma is Koma.fu or from_koma is Koma.kyosha) and to_y == 0:
+                return False
+            if (from_koma is Koma.opponent_fu or from_koma is Koma.opponent_kyosha) and to_y == 8:
+                return False
+        if promote:
+            if not from_koma.can_promote():
+                return False
+            if from_koma.is_first():
+                if not (0 <= from_y <= 2 or 0 <= to_y <= 2):
+                    return False
+            else:
+                if not (6 <= from_y <= 8 or 6 <= to_y <= 8):
+                    return False
 
-        for movement in move[from_koma]:
-            if from_x + movement[0] == to_x and from_y + movement[1] == to_y:
-
+        for movable_position in movable_positions[from_koma]:
+            if from_x + movable_position[0] == to_x and from_y + movable_position[1] == to_y:
                 if to_koma is Koma.empty or not to_koma.is_first() == self.first:
                     if self.checkObstacle(from_x, from_y, to_x, to_y):
                         return True
@@ -195,8 +214,8 @@ class Shogi:
         if self.board[from_y][from_x].is_keima():
             return True
         while True:
-            to_x = approach(from_x, to_x)
-            to_y = approach(from_y, to_y)
+            to_x = _approach(from_x, to_x)
+            to_y = _approach(from_y, to_y)
             if from_x == to_x and from_y == to_y:
                 break
             road_koma = self.board[to_y][to_x]
@@ -214,7 +233,7 @@ class Shogi:
                     koma_positions.append([x, y])
         return koma_positions
 
-def approach(to, by):
+def _approach(to, by):
     if to < by:
         return by-1
     elif to > by:
@@ -222,7 +241,7 @@ def approach(to, by):
     else:
         return by
 
-move = {
+movable_positions = {
         Koma.fu: [[0, -1]],
         Koma.kyosha: [[0, -1], [0, -2], [0, -3], [0, -4], [0, -5], [0, -6], [0, -7], [0, -8]],
         Koma.keima: [[-1, -2], [1, -2]],
@@ -232,21 +251,21 @@ move = {
         Koma.hisha: [[0, -8], [0, -7], [0, -6], [0, -5], [0, -4], [0, -3], [0, -2], [0, -1], [-8, 0], [-7, 0], [-6, 0], [-5, 0], [-4, 0], [-3, 0], [-2, 0], [-1, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8]],
         Koma.gyoku: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]],
 }
-move[Koma.promoted_fu] = move[Koma.promoted_kyosha] = move[Koma.promoted_kyosha] = move[Koma.promoted_gin] = move[Koma.kin]
-move[Koma.promoted_kaku] = move[Koma.kaku] + [[0, -1], [-1, 0], [1, 0], [0, 1]]
-move[Koma.promoted_hisha] = move[Koma.hisha] + [[-1, -1], [1, -1], [-1, 1], [1, 1]]
+movable_positions[Koma.promoted_fu] = movable_positions[Koma.promoted_kyosha] = movable_positions[Koma.promoted_kyosha] = movable_positions[Koma.promoted_gin] = movable_positions[Koma.kin]
+movable_positions[Koma.promoted_kaku] = movable_positions[Koma.kaku] + [[0, -1], [-1, 0], [1, 0], [0, 1]]
+movable_positions[Koma.promoted_hisha] = movable_positions[Koma.hisha] + [[-1, -1], [1, -1], [-1, 1], [1, 1]]
 
-move[Koma.opponent_fu] = [[0, 1]]
-move[Koma.opponent_kyosha] = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8]]
-move[Koma.opponent_keima] = [[1, 2], [-1, 2]]
-move[Koma.opponent_gin] = [[1, 1], [0, 1], [-1, 1], [1, -1], [-1, -1]]
-move[Koma.opponent_kin] = [[1, 1], [0, 1], [-1, 1], [1, 0], [-1, 0], [0, -1]]
-move[Koma.opponent_kaku] = move[Koma.kaku]
-move[Koma.opponent_hisha] = move[Koma.hisha]
-move[Koma.opponent_gyoku] = move[Koma.gyoku]
+movable_positions[Koma.opponent_fu] = [[0, 1]]
+movable_positions[Koma.opponent_kyosha] = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8]]
+movable_positions[Koma.opponent_keima] = [[1, 2], [-1, 2]]
+movable_positions[Koma.opponent_gin] = [[1, 1], [0, 1], [-1, 1], [1, -1], [-1, -1]]
+movable_positions[Koma.opponent_kin] = [[1, 1], [0, 1], [-1, 1], [1, 0], [-1, 0], [0, -1]]
+movable_positions[Koma.opponent_kaku] = movable_positions[Koma.kaku]
+movable_positions[Koma.opponent_hisha] = movable_positions[Koma.hisha]
+movable_positions[Koma.opponent_gyoku] = movable_positions[Koma.gyoku]
 
-move[Koma.opponent_promoted_fu] = move[Koma.opponent_promoted_kyosha] = move[Koma.opponent_promoted_keima] = move[Koma.opponent_promoted_gin] = move[Koma.opponent_kin]
+movable_positions[Koma.opponent_promoted_fu] = movable_positions[Koma.opponent_promoted_kyosha] = movable_positions[Koma.opponent_promoted_keima] = movable_positions[Koma.opponent_promoted_gin] = movable_positions[Koma.opponent_kin]
 
-move[Koma.opponent_promoted_kaku] = move[Koma.promoted_kaku]
-move[Koma.opponent_promoted_hisha] = move[Koma.promoted_hisha]
+movable_positions[Koma.opponent_promoted_kaku] = movable_positions[Koma.promoted_kaku]
+movable_positions[Koma.opponent_promoted_hisha] = movable_positions[Koma.promoted_hisha]
 
