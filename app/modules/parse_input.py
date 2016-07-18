@@ -94,14 +94,14 @@ koma_names = [
 
 koma_names += list(map(lambda n: "成"+n, koma_names))
 
-class ParseInput:
-    def _transposition_num(num):
-        """
-        transposition axis(y) number.
-        0 => 8, 1 => 7, ..., 8 => 0
-        """
-        return (4 - num) + 4
+def transposition_num(num):
+    """
+    transposition axis(y) number.
+    0 => 8, 1 => 7, ..., 8 => 0
+    """
+    return (4 - num) + 4
 
+class ParseInput:
     @staticmethod
     def parse(input_str, shogi):
         """
@@ -110,15 +110,15 @@ class ParseInput:
 
         # TODO : "同"という表現への対応
         if input_str[0] in str2info and input_str[0] in str2info:
-            to_x = self._transposition_num(str2info[input_str[0]])
-            to_y = self.str2info[input_str[1]]
+            to_x = transposition_num(str2info[input_str[0]])
+            to_y = str2info[input_str[1]]
         else:
             # TODO : Send Error Message
             return False
 
-        slice_idx = 1
-        if input_str[next_idx] == "同":
-            slice_idx = 2
+        slice_idx = 2
+        if input_str[slice_idx] == "同":
+            slice_idx = 3
         input_str = input_str[slice_idx:]
 
 
@@ -168,7 +168,7 @@ class ParseInput:
                 promote = True
                 input_str = input_str.replace("成", "")
 
-        if input_str.find("打"):
+        if input_str.find("打") != -1:
             from_x = -1
             from_y = -1
 
@@ -279,6 +279,7 @@ class ParseInput:
 
             else:
                 # TODO : Send Error Message
-                return False
+                #return False
+                return input_str
 
         return (from_x, from_y, to_x, to_y, promote)
