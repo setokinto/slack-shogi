@@ -68,9 +68,9 @@ koma_names = [
 koma_names += list(map(lambda n: "成"+n, koma_names))
 koma_names_string_regex = "|".join(koma_names)
 
-@respond_to("([一二三四五六七八九123456789１２３４５６７８９]{2})("+koma_names_string_regex+")([上右下左]{1,2})?(成)?")
-def koma_move(message, position, koma, sub_position=None, promote=None):
-    movement_str = "".join([x for x in [position, koma, sub_position, promote] if x is not None])
+@respond_to("([一二三四五六七八九123456789１２３４５６７８９]{2})?(同)?("+koma_names_string_regex+")([上右下左寄直打つ]{1,2})?(成)?")
+def koma_move(message, position, dou, koma, sub_position=None, promote=None):
+    movement_str = "".join([x for x in [position, dou, koma, sub_position, promote] if x is not None])
     channel_id = message.body["channel"]
     if not ShogiInput.exists(channel_id):
         message.reply("start withから初めてね")
