@@ -145,10 +145,6 @@ class ShogiTest(unittest.TestCase):
         movable = shogi.movable(3, 6, 2, 8, True)
         self.assertTrue(movable)
 
-
-
-        
-
         shogi.first = True
         # 81 kyo narazu
         movable = shogi.movable(1, 1, 1, 0, False)
@@ -234,6 +230,107 @@ class ShogiTest(unittest.TestCase):
         movable = shogi.movable(5, 8, 5, 7, True)
         self.assertFalse(movable)
 
+    def test_drop(self):
+        shogi = Shogi()
+        shogi.first_tegoma = [Koma.kin]
+        shogi.second_tegoma = [Koma.opponent_kin]
+        shogi.drop(Koma.kin, 4, 4)
+        self.assertEqual(shogi.board[4][4], Koma.kin)
+        shogi.drop(Koma.opponent_kin, 3, 3)
+        self.assertEqual(shogi.board[3][3], Koma.opponent_kin)
+
+    def test_droppable(self):
+        shogi = Shogi()
+        shogi.first_tegoma = [Koma.kin]
+        shogi.second_tegoma = [Koma.opponent_kin]
+
+        shogi.first = True
+        # have
+        droppable = shogi.droppable(Koma.kin, 4, 4)
+        self.assertTrue(droppable)
+        # opponent
+        droppable = shogi.droppable(Koma.opponent_kin, 4, 4)
+        self.assertFalse(droppable)
+        # not have
+        droppable = shogi.droppable(Koma.gin, 4, 4)
+        self.assertFalse(droppable)
+
+        shogi.first = False
+        droppable = shogi.droppable(Koma.opponent_kin, 4, 4)
+        self.assertTrue(droppable)
+        # opponent
+        droppable = shogi.droppable(Koma.kin, 4, 4)
+        self.assertFalse(droppable)
+        # not have
+        droppable = shogi.droppable(Koma.opponent_gin, 4, 4)
+        self.assertFalse(droppable)
+
+    def test_droppable_nifu(self):
+        shogi = Shogi()
+        shogi.first_tegoma = [Koma.fu]
+        shogi.second_tegoma = [Koma.opponent_fu]
+
+        shogi.first = True
+        droppable = shogi.droppable(Koma.fu, 4, 4)
+        self.assertFalse(droppable)
+        shogi.first = False
+        droppable = shogi.droppable(Koma.opponent_fu, 4, 4)
+        self.assertFalse(droppable)
+
+    def test_droppable_fu_kyo_kei(self):
+        shogi = Shogi()
+        shogi.board[0][0] = Koma.empty
+        shogi.board[2][0] = Koma.empty
+        shogi.board[6][0] = Koma.empty
+        shogi.board[8][0] = Koma.empty
+        shogi.first_tegoma = [Koma.fu, Koma.kyosha, Koma.keima]
+        shogi.second_tegoma = [Koma.opponent_fu, Koma.opponent_kyosha, Koma.opponent_keima]
+        shogi.first = True
+        # keima
+        droppable = shogi.droppable(Koma.keima, 0, 1)
+        self.assertFalse(droppable)
+        droppable = shogi.droppable(Koma.keima, 0, 2)
+        self.assertTrue(droppable)
+        droppable = shogi.droppable(Koma.opponent_keima, 1, 2)
+        self.assertFalse(droppable)
+        droppable = shogi.droppable(Koma.keima, 0, 3)
+        self.assertTrue(droppable)
+        # fu
+        droppable = shogi.droppable(Koma.fu, 0, 0)
+        self.assertFalse(droppable)
+        droppable = shogi.droppable(Koma.fu, 0, 1)
+        self.assertTrue(droppable)
+        # kyo
+        droppable = shogi.droppable(Koma.kyosha, 0, 0)
+        self.assertFalse(droppable)
+        droppable = shogi.droppable(Koma.kyosha, 0, 1)
+        self.assertTrue(droppable)
+
+        shogi.first = False
+        # keima
+        droppable = shogi.droppable(Koma.opponent_keima, 0, 7)
+        self.assertFalse(droppable)
+        droppable = shogi.droppable(Koma.opponent_keima, 0, 6)
+        self.assertTrue(droppable)
+        droppable = shogi.droppable(Koma.keima, 1, 6)
+        self.assertFalse(droppable)
+        droppable = shogi.droppable(Koma.opponent_keima, 0, 5)
+        self.assertTrue(droppable)
+        # fu
+        droppable = shogi.droppable(Koma.opponent_fu, 0, 7)
+        self.assertTrue(droppable)
+        droppable = shogi.droppable(Koma.opponent_fu, 0, 8)
+        self.assertFalse(droppable)
+        droppable = shogi.droppable(Koma.opponent_fu, 0, 0)
+        self.assertTrue(droppable)
+        droppable = shogi.droppable(Koma.opponent_fu, 0, 1)
+        self.assertTrue(droppable)
+        # kyosha
+        droppable = shogi.droppable(Koma.opponent_kyosha, 0, 7)
+        self.assertTrue(droppable)
+        droppable = shogi.droppable(Koma.opponent_kyosha, 0, 8)
+        self.assertFalse(droppable)
+
 
     def test_find_koma(self):
         shogi = Shogi()
@@ -247,4 +344,14 @@ class ShogiTest(unittest.TestCase):
 
         koma_positions = shogi.find_koma(Koma.hisha)
         self.assertIn([7, 7], koma_positions)
+    
+    def test_last_move(self):
+        shogi = Shogi()
+        shogi.second_tegoma = [Koma.opponent_fu]
+        shogi.move(0, 6, 0, 5, False)
+        self.assertEqual(shogi.last_move_x, 0)
+        self.assertEqual(shogi.last_move_y, 5)
+        shogi.drop(Koma.opponent_fu, 5, 5)
+        self.assertEqual(shogi.last_move_x, 5)
+        self.assertEqual(shogi.last_move_y, 5)
 

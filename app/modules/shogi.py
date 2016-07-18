@@ -51,9 +51,11 @@ class Koma(Enum):
         if self.value & 0x10:
             return False
         return True
-
-class ShogiCantMoveException(Exception):
-    pass
+    def promote(self):
+        try:
+            return Koma(self.value | 0x10)
+        except ValueError:
+            return self
 
 class Shogi:
     # TODO: implement komaochi
@@ -61,6 +63,8 @@ class Shogi:
         self.first = True
         self.first_tegoma = []
         self.second_tegoma = []
+        self.last_move_x = None
+        self.last_move_y = None
         self.board = [
             [
                 Koma.opponent_kyosha,
@@ -163,20 +167,21 @@ class Shogi:
             ],
         ]
     def move(self, from_x, from_y, to_x, to_y, promote):
-        """
-            if from_x and from_y is -1, the koma is from komadai
-        """
         koma = self.board[from_y][from_x]
-        # TODO: check for movable
-        if False: # not movable:
-            raise ShogiCantMoveException()
         koma_for_komadai = self.board[to_y][to_x]
         if koma_for_komadai is not Koma.empty:
-            # TODO: move to komadai
-            pass
+            if self.first:
+                self.first_tegoma.append(koma_for_komadai)
+            else:
+                self.second_tegoma.append(koma_for_komadai)
         self.board[from_y][from_x] = Koma.empty
-        self.board[to_y][to_x] = koma # TODO: in case promote is true
+        if promote:
+            self.board[to_y][to_x] = koma.promote()
+        else:
+            self.board[to_y][to_x] = koma
         self.first = not self.first
+        self.last_move_x = to_x
+        self.last_move_y = to_y
 
     def movable(self, from_x, from_y, to_x, to_y, promote):
         board = self.board
@@ -211,6 +216,48 @@ class Shogi:
                 if to_koma is Koma.empty or not to_koma.is_first() == self.first:
                     if self.checkObstacle(from_x, from_y, to_x, to_y):
                         return True
+        return False
+
+    def drop(self, koma, to_x, to_y):
+        if self.first:
+            self.first_tegoma.remove(koma)
+        else:
+            self.second_tegoma.remove(koma)
+        koma_for_komadai = self.board[to_y][to_x]
+        self.board[to_y][to_x] = koma
+        if koma_for_komadai is not Koma.empty:
+            if self.first:
+                self.first_tegoma.append(koma_for_komadai)
+            else:
+                self.second_tegoma.append(koma_for_komadai)
+        self.first = not self.first
+        self.last_move_x = to_x
+        self.last_move_y = to_y
+
+    def droppable(self, koma, to_x, to_y):
+        if self.first:
+            tegoma = self.first_tegoma
+        else:
+            tegoma = self.second_tegoma
+        if koma in tegoma and self.board[to_y][to_x] is Koma.empty:
+            if koma is Koma.fu or koma is Koma.opponent_fu:
+                for y_board in self.board:
+                    if y_board[to_x] is koma:
+                        # 2fu
+                        return False
+            if koma is Koma.fu or koma is Koma.kyosha:
+                if to_y == 0:
+                    return False
+            if koma is Koma.keima:
+                if to_y <= 1:
+                    return False
+            if koma is Koma.opponent_fu or koma is Koma.opponent_kyosha:
+                if to_y == 8:
+                    return False
+            if koma is Koma.opponent_keima:
+                if to_y >= 7:
+                    return False
+            return True
         return False
 
     def checkObstacle(self, from_x, from_y, to_x, to_y):
