@@ -93,6 +93,9 @@ def koma_move(message, position, dou, koma, sub_position=None, promote=None):
 @respond_to("board")
 def board_info(message):
     channel_id = message.body["channel"]
+    if not ShogiInput.exists(channel_id):
+        message.reply("start withから初めてね")
+        return
     board = ShogiInput.get_shogi_board(channel_id)
     board_str = ShogiOutput.make_board_emoji(board)
     message.send(board_str)
@@ -106,6 +109,9 @@ def board_info(message):
 @respond_to(".*ありません.*")
 def resign(message):
     channel_id = message.body["channel"]
+    if not ShogiInput.exists(channel_id):
+        message.reply("start withから初めてね")
+        return
     message.send("最終局面")
     board = ShogiInput.get_shogi_board(channel_id)
     board_str = ShogiOutput.make_board_emoji(board)
