@@ -53,7 +53,7 @@ def input_emojis(id_, password, team_id):
     count = 0
     for file_name in emojis:
         emoji_name = emojis[file_name]
-        br.open("https://setokinto.slack.com/customize/emoji")
+        br.open("https://{}.slack.com/customize/emoji".format(team_id))
         br.select_form(nr=0)
         br["name"] = emoji_prefix + emoji_name
         br.form.add_file(open(file_name), "images/png", file_name, name="img")
