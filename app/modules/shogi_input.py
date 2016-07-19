@@ -107,6 +107,7 @@ class ShogiInput:
                            "name": shogi.second_user_name,
                        }
                    },
+                   "turn": shogi.first,
                    "_shogi": shogi,
                }
 
