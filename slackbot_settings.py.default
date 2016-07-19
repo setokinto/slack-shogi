@@ -1,2 +1,4 @@
 API_TOKEN = "<your-api-token>"
+DEPLOY_HOSTS = ["example.com"]
+WEBHOOK_URL = "" # For your Incoming webhook URL
 
