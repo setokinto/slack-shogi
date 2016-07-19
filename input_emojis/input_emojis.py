@@ -70,7 +70,7 @@ emojis = {
     "images/last_ou_.png": "last_ou_enemy",
 }
 
-def input_emojis(id_, password, team_id):
+def input_emojis(id_, password, team_id, two_factor):
     br = mechanize.Browser()
     br.set_handle_robots(False)
     br.open("https://{}.slack.com/".format(team_id))
@@ -78,7 +78,10 @@ def input_emojis(id_, password, team_id):
     br["email"] = id_
     br["password"] = password
     br.submit()
-    # TODO: two factor authentication
+    if two_factor:
+        br.select_form(nr=0)
+        br["2fa_code"] = two_factor
+        br.submit()
 
     count = 0
     for file_name in emojis:
@@ -96,5 +99,6 @@ if __name__ == "__main__":
     team_id = raw_input("your slack team id: ")
     id_ = raw_input("your id: ")
     password = getpass.getpass("your password: ")
-    input_emojis(id_, password, team_id)
+    two_factor = raw_input("authentication code for two factor(If needed) :")
+    input_emojis(id_, password, team_id, two_factor)
 
