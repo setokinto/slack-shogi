@@ -40,7 +40,11 @@ koma2emoji = {
 class ShogiOutput:
     @staticmethod
     def make_board_emoji(board_info):
-        output_text = "後手 {} ： ".format(board_info["info"]["second"]["name"])
+        output_text = ""
+        if not board_info["turn"]:
+            output_text = "[手番]"
+
+        output_text += "後手 {} ： ".format(board_info["info"]["second"]["name"])
         cnt = 0
         if board_info["second"]:
             for koma in board_info["second"]:
@@ -64,6 +68,9 @@ class ShogiOutput:
         output_text += "\n"
 
         # socond koma
+        if board_info["turn"]:
+            output_text += "[手番]"
+
         output_text += "先手 {} ： ".format(board_info["info"]["first"]["name"])
         cnt = 0
         if board_info["first"]:
