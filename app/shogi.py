@@ -3,12 +3,16 @@ import re
 
 from slackbot.bot import respond_to
 
-from app.modules.shogi_input import ShogiInput
+from app.modules.shogi_input import ShogiInput, ShogiBot
 from app.modules.shogi_output import ShogiOutput
 from app.slack_utils.user import User
 
 @respond_to('start with <?@?([\d\w_-]+)>?')
 def start_shogi(message, opponent_name):
+    if opponent_name == "やねうら王":
+        channel_id = message.body["channel"]
+        initWithYaneuraOu(message, channel_id)
+        return
     slacker = message._client.webapi
     user = User(slacker)
 
@@ -40,6 +44,24 @@ def start_shogi(message, opponent_name):
         board_str = ShogiOutput.make_board_emoji(board)
         message.send(board_str)
 
+def initWithYaneuraOu(message, channel_id):
+    print("OK")
+    shogi = ShogiInput.initWithYaneuraOu(channel_id=channel_id)
+    print("OK")
+    
+    if shogi is None:
+        print("OK")
+        message.reply("Error, sorry")
+    else:
+        print("OK")
+        message.reply("Shogi started: " + shogi.id)
+        board = ShogiInput.get_shogi_board(channel_id)
+        board_str = ShogiOutput.make_board_emoji(board)
+        message.send(board_str)
+
+
+
+
 koma_names = [
     "歩兵?",
     "と金?",
@@ -70,6 +92,17 @@ def koma_move(message, position, dou, koma, sub_position=None, promote=None):
         board = ShogiInput.get_shogi_board(channel_id)
         board_str = ShogiOutput.make_board_emoji(board)
         message.send(board_str)
+
+        shogi = ShogiInput.get_shogi(channel_id)
+        if isinstance(shogi, ShogiBot):
+            from_x, from_y, to_x, to_y, promote, koma = shogi.think()
+            if from_x == -1:
+                shogi.drop(koma, to_x, to_y)
+            else:
+                shogi.move(from_x, from_y, to_x, to_y, promote)
+            board = ShogiInput.get_shogi_board(channel_id)
+            board_str = ShogiOutput.make_board_emoji(board)
+            message.send(board_str)
     else:
         message.reply("You cannot move this!!")
         board = ShogiInput.get_shogi_board(channel_id)

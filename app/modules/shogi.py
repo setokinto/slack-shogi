@@ -13,7 +13,7 @@ class Koma(Enum):
     hisha = 0x07
     gyoku = 0x08
     promoted_fu = 0x11
-    promoted_kyosha = 0x12 
+    promoted_kyosha = 0x12
     promoted_keima = 0x13
     promoted_gin = 0x14
     promoted_kaku = 0x16
@@ -51,6 +51,8 @@ class Koma(Enum):
         if self.value & 0x10:
             return False
         return True
+    def is_promoted(self):
+        return bool(self.value & 0x10)
     def promote(self):
         try:
             return Koma(self.value | 0x10)
