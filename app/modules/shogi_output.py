@@ -63,8 +63,13 @@ class ShogiOutput:
         # board
         for y in range(9):
             for x in range(9):
-                if not board_info["_shogi"].shogi.last_move_x == None and x == board_info["_shogi"].shogi.last_move_x and y == board_info["_shogi"].shogi.last_move_y:
-                    output_text += koma2emoji[board_info["board"][y][x]].replace(emoji_prefix, emoji_prefix + "last_")
+                if x == board_info["_shogi"].shogi.last_move_x and \
+                   y == board_info["_shogi"].shogi.last_move_y:
+                    output_text += koma2emoji[
+                                     board_info["board"][y][x]
+                                   ].replace(emoji_prefix,
+                                     emoji_prefix + "last_"
+                                   )
                 else:
                     output_text += koma2emoji[board_info["board"][y][x]]
             output_text += "\n"
