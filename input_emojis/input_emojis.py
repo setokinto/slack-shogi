@@ -77,7 +77,7 @@ emojis = {
     "images/six.png": "six",
     "images/seven.png": "seven",
     "images/eight.png": "eight",
-    "images/nine.png": "nin",
+    "images/nine.png": "nine",
     "images/iti.png": "iti",
     "images/ni.png": "ni",
     "images/san.png": "san",
@@ -87,7 +87,7 @@ emojis = {
     "images/nana.png": "nana",
     "images/hati.png": "hati",
     "images/kyu.png": "kyu",
-    "images/origin.png": "blank",
+    "images/origin.png": "blank"
 }
 
 
