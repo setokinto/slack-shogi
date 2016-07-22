@@ -103,6 +103,7 @@ class ShogiOutput:
 
     @staticmethod
     def make_board_emoji(board_info, is_number=False):
+        # second koma
         output_text = ""
         if not board_info["turn"]:
             output_text = "[手番]"
@@ -144,7 +145,7 @@ class ShogiOutput:
             output_text += "\n"
         output_text += "\n"
 
-        # socond koma
+        # first koma
         if board_info["turn"]:
             output_text += "[手番]"
 
@@ -168,6 +169,7 @@ class ShogiOutput:
 
     @staticmethod
     def make_board_emoji_reverse(board_info):
+        # first koma
         output_text = ""
         if board_info["turn"]:
             output_text = "[手番]"
