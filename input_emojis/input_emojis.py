@@ -1,6 +1,7 @@
 
 import getpass
 import time
+import sys
 
 import mechanize
 
@@ -70,7 +71,7 @@ emojis = {
     "images/last_ou_.png": "last_ou_enemy",
 }
 
-def input_emojis(id_, password, team_id, two_factor):
+def input_emojis(id_, password, team_id, two_factor, force_update=False):
     br = mechanize.Browser()
     br.set_handle_robots(False)
     br.open("https://{}.slack.com/".format(team_id))
@@ -86,7 +87,10 @@ def input_emojis(id_, password, team_id, two_factor):
     count = 0
     for file_name in emojis:
         emoji_name = emojis[file_name]
-        br.open("https://{}.slack.com/customize/emoji".format(team_id))
+        response = br.open("https://{}.slack.com/customize/emoji".format(team_id))
+        if response.read().find(":"+emoji_name+":") >= 0 and not force_update:
+            # Simple resume. Does it work?
+            continue
         br.select_form(nr=0)
         br["name"] = emoji_prefix + emoji_name
         br.form.add_file(open(file_name), "images/png", file_name, name="img")
