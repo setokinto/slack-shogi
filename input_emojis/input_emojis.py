@@ -88,8 +88,10 @@ def input_emojis(id_, password, team_id, two_factor, force_update=False):
     for file_name in emojis:
         emoji_name = emojis[file_name]
         response = br.open("https://{}.slack.com/customize/emoji".format(team_id))
-        if response.read().find(":"+emoji_name+":") >= 0 and not force_update:
+        if response.read().find(emoji_name) >= 0 and not force_update:
             # Simple resume. Does it work?
+            # FIXME: Use beautiful soup and search it using dom
+            print("{}/{} skipped(already exists for the name '{}')".format(count, len(emojis), emoji_name))
             continue
         br.select_form(nr=0)
         br["name"] = emoji_prefix + emoji_name
@@ -99,10 +101,20 @@ def input_emojis(id_, password, team_id, two_factor, force_update=False):
         print("{}/{} completed".format(count, len(emojis)))
         time.sleep(1)
 
+def is_force_update():
+    args = sys.argv
+    if not len(args) == 2:
+        return False
+    if "-f" in args or "--force-update" in args:
+        return True
+    return False
+
+
 if __name__ == "__main__":
+    force_update = is_force_update()
     team_id = raw_input("your slack team id: ")
     id_ = raw_input("your id: ")
     password = getpass.getpass("your password: ")
     two_factor = raw_input("authentication code for two factor(If needed) :")
-    input_emojis(id_, password, team_id, two_factor)
+    input_emojis(id_, password, team_id, two_factor, force_update)
 
