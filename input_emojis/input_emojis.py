@@ -71,7 +71,12 @@ emojis = {
     "images/last_ou_.png": "last_ou_enemy",
 }
 
+<<<<<<< f3e1b36dcb65e35b5e44405b303b9ad42e81d946
 def input_emojis(id_, password, team_id, two_factor, force_update=False):
+=======
+
+def input_emojis(id_, password, team_id, force_update=True):
+>>>>>>> Make force_update default
     br = mechanize.Browser()
     br.set_handle_robots(False)
     br.open("https://{}.slack.com/".format(team_id))
@@ -104,10 +109,10 @@ def input_emojis(id_, password, team_id, two_factor, force_update=False):
 def is_force_update():
     args = sys.argv
     if not len(args) == 2:
-        return False
-    if "-f" in args or "--force-update" in args:
         return True
-    return False
+    if "-p" in args or "--patch" in args:
+        return False
+    return True
 
 
 if __name__ == "__main__":
