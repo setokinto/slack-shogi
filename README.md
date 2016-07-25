@@ -24,9 +24,10 @@ It requires Python2 for mehanize.
 ```
 % cd input_emojis
 % pip install mechanize
+% pip install beautifulsoup2
 % python input_emojis.py
 your slack team id: [your_team_id]
-your id: [your_id@example.com]
+your id (email): [your_id@example.com]
 your password: [******]
 authentication code for two factor(If needed) : [two-factor code or empty if you don't use two-factor-authentication]
 ...
