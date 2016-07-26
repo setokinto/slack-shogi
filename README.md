@@ -26,7 +26,7 @@ It requires Python2 for mehanize.
 % pip install mechanize
 % python input_emojis.py
 your slack team id: [your_team_id]
-your id: [your_id@example.com]
+your id (email): [your_id@example.com]
 your password: [******]
 authentication code for two factor(If needed) : [two-factor code or empty if you don't use two-factor-authentication]
 ...
@@ -34,6 +34,8 @@ authentication code for two factor(If needed) : [two-factor code or empty if you
 ...
 Completed!!
 ```
+
+If you already inputted emojis and has a difference for adding emojis, you can use `--patch` option for this script. The script called with this optioin ignores emojis which already registed.
 
 # Thanks for
 - [Slackbot](https://github.com/lins05/slackbot)
