@@ -24,7 +24,6 @@ It requires Python2 for mehanize.
 ```
 % cd input_emojis
 % pip install mechanize
-% pip install beautifulsoup2
 % python input_emojis.py
 your slack team id: [your_team_id]
 your id (email): [your_id@example.com]
@@ -35,6 +34,8 @@ authentication code for two factor(If needed) : [two-factor code or empty if you
 ...
 Completed!!
 ```
+
+If you already inputted emojis and has a difference for adding emojis, you can use `--patch` option for this script. The script called with this optioin ignores emojis which already registed.
 
 # Thanks for
 - [Slackbot](https://github.com/lins05/slackbot)
