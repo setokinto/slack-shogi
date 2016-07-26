@@ -57,7 +57,7 @@ koma_names = [
 
 koma_names_string_regex = "|".join(koma_names)
 
-@respond_to("([一二三四五六七八九123456789１２３４５６７８９]{2})?(同)?("+koma_names_string_regex+")([上右下左寄直打つ]{1,2})?(成)?")
+@respond_to("([一二三四五六七八九123456789１２３４５６７８９]{2})?(同)?("+koma_names_string_regex+")([上右下左寄直打]{1,2})?つ?(成)?")
 def koma_move(message, position, dou, koma, sub_position=None, promote=None):
     movement_str = "".join([x for x in [position, dou, koma, sub_position, promote] if x is not None])
     channel_id = message.body["channel"]
