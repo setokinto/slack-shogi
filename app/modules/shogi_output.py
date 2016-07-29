@@ -7,7 +7,7 @@ emoji_separetor = ":"
 koma2emoji = {
     Koma.empty: emoji_separetor + emoji_prefix + "mu" + emoji_separetor,
     Koma.fu: emoji_separetor + emoji_prefix + "fu" + emoji_separetor,
-    Koma.kyosha: emoji_separetor + emoji_prefix + "kyou" + emoji_separetor ,
+    Koma.kyosha: emoji_separetor + emoji_prefix + "kyou" + emoji_separetor,
     Koma.keima: emoji_separetor + emoji_prefix + "kei" + emoji_separetor,
     Koma.gin: emoji_separetor + emoji_prefix + "gin" + emoji_separetor,
     Koma.kin: emoji_separetor + emoji_prefix + "kin" + emoji_separetor,
@@ -37,7 +37,9 @@ koma2emoji = {
     Koma.opponent_promoted_hisha: emoji_separetor + emoji_prefix + "ryu_enemy" + emoji_separetor,
 }
 
+
 class ShogiOutput:
+
     @staticmethod
     def make_board_emoji(board_info):
         output_text = ""
@@ -66,10 +68,10 @@ class ShogiOutput:
                 if x == board_info["_shogi"].shogi.last_move_x and \
                    y == board_info["_shogi"].shogi.last_move_y:
                     output_text += koma2emoji[
-                                     board_info["board"][y][x]
-                                   ].replace(emoji_prefix,
-                                     emoji_prefix + "last_"
-                                   )
+                        board_info["board"][y][x]
+                    ].replace(emoji_prefix,
+                              emoji_prefix + "last_"
+                              )
                 else:
                     output_text += koma2emoji[board_info["board"][y][x]]
             output_text += "\n"

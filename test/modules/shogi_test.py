@@ -1,7 +1,9 @@
 import unittest
 from app.modules.shogi import Shogi, Koma
 
+
 class ShogiTest(unittest.TestCase):
+
     def setUp(self):
         pass
 
@@ -100,15 +102,24 @@ class ShogiTest(unittest.TestCase):
     def test_move_for_promote(self):
         shogi = Shogi()
         shogi.board = [
-                [Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.promoted_fu, Koma.hisha, Koma.empty, Koma.kin],
-                [Koma.fu, Koma.kyosha, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.gyoku],
-                [Koma.opponent_fu, Koma.empty, Koma.empty, Koma.keima, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
-                [Koma.empty, Koma.empty, Koma.gin, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
-                [Koma.empty, Koma.kyosha, Koma.opponent_kyosha, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
-                [Koma.empty, Koma.empty, Koma.opponent_gin, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
-                [Koma.fu, Koma.empty, Koma.empty, Koma.opponent_keima, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
-                [Koma.opponent_fu, Koma.opponent_kyosha, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.opponent_gyoku],
-                [Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.opponent_promoted_fu, Koma.opponent_hisha, Koma.empty, Koma.opponent_kin],
+            [Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty,
+                Koma.promoted_fu, Koma.hisha, Koma.empty, Koma.kin],
+            [Koma.fu, Koma.kyosha, Koma.empty, Koma.empty, Koma.empty,
+                Koma.empty, Koma.empty, Koma.empty, Koma.gyoku],
+            [Koma.opponent_fu, Koma.empty, Koma.empty, Koma.keima,
+                Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
+            [Koma.empty, Koma.empty, Koma.gin, Koma.empty, Koma.empty,
+                Koma.empty, Koma.empty, Koma.empty, Koma.empty],
+            [Koma.empty, Koma.kyosha, Koma.opponent_kyosha, Koma.empty,
+                Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
+            [Koma.empty, Koma.empty, Koma.opponent_gin, Koma.empty,
+                Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
+            [Koma.fu, Koma.empty, Koma.empty, Koma.opponent_keima,
+                Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty],
+            [Koma.opponent_fu, Koma.opponent_kyosha, Koma.empty, Koma.empty,
+                Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.opponent_gyoku],
+            [Koma.empty, Koma.empty, Koma.empty, Koma.empty, Koma.empty,
+                Koma.opponent_promoted_fu, Koma.opponent_hisha, Koma.empty, Koma.opponent_kin],
         ]
 
         shogi.first = True
@@ -284,7 +295,8 @@ class ShogiTest(unittest.TestCase):
         shogi.board[6][0] = Koma.empty
         shogi.board[8][0] = Koma.empty
         shogi.first_tegoma = [Koma.fu, Koma.kyosha, Koma.keima]
-        shogi.second_tegoma = [Koma.opponent_fu, Koma.opponent_kyosha, Koma.opponent_keima]
+        shogi.second_tegoma = [Koma.opponent_fu,
+                               Koma.opponent_kyosha, Koma.opponent_keima]
         shogi.first = True
         # keima
         droppable = shogi.droppable(Koma.keima, 0, 1)
@@ -331,7 +343,6 @@ class ShogiTest(unittest.TestCase):
         droppable = shogi.droppable(Koma.opponent_kyosha, 0, 8)
         self.assertFalse(droppable)
 
-
     def test_find_koma(self):
         shogi = Shogi()
         koma_positions = shogi.find_koma(Koma.kin)
@@ -344,7 +355,7 @@ class ShogiTest(unittest.TestCase):
 
         koma_positions = shogi.find_koma(Koma.hisha)
         self.assertIn([7, 7], koma_positions)
-    
+
     def test_last_move(self):
         shogi = Shogi()
         shogi.second_tegoma = [Koma.opponent_fu]
@@ -354,4 +365,3 @@ class ShogiTest(unittest.TestCase):
         shogi.drop(Koma.opponent_fu, 5, 5)
         self.assertEqual(shogi.last_move_x, 5)
         self.assertEqual(shogi.last_move_y, 5)
-

@@ -2,6 +2,7 @@
 
 from enum import Enum
 
+
 class Koma(Enum):
     empty = 0
     fu = 0x01
@@ -13,7 +14,7 @@ class Koma(Enum):
     hisha = 0x07
     gyoku = 0x08
     promoted_fu = 0x11
-    promoted_kyosha = 0x12 
+    promoted_kyosha = 0x12
     promoted_keima = 0x13
     promoted_gin = 0x14
     promoted_kaku = 0x16
@@ -39,36 +40,43 @@ class Koma(Enum):
             return True
         elif 0x20 <= self.value < 0x40:
             return False
+
     def is_keima(self):
         if self is Koma.keima:
             return True
         if self is Koma.opponent_keima:
             return True
         return False
+
     def can_promote(self):
         if self is Koma.kin or self is Koma.gyoku or self is Koma.opponent_kin or self is Koma.opponent_gyoku:
             return False
         if self.value & 0x10:
             return False
         return True
+
     def promote(self):
         try:
             return Koma(self.value | 0x10)
         except ValueError:
             return self
+
     def unpromote(self):
         try:
             return Koma(self.value & 0x2F)
         except ValueError:
             return self
+
     def go_enemy(self):
         if self.is_first():
             return Koma(self.value + 0x20)
         else:
             return Koma(self.value - 0x20)
 
+
 class Shogi:
     # TODO: implement komaochi
+
     def __init__(self):
         self.first = True
         self.first_tegoma = []
@@ -176,6 +184,7 @@ class Shogi:
                 Koma.kyosha,
             ],
         ]
+
     def move(self, from_x, from_y, to_x, to_y, promote):
         koma = self.board[from_y][from_x]
         koma_for_komadai = self.board[to_y][to_x]
@@ -295,39 +304,48 @@ class Shogi:
                     koma_positions.append([x, y])
         return koma_positions
 
+
 def _approach(to, by):
     if to < by:
-        return by-1
+        return by - 1
     elif to > by:
-        return by+1
+        return by + 1
     else:
         return by
 
 movable_positions = {
-        Koma.fu: [[0, -1]],
-        Koma.kyosha: [[0, -1], [0, -2], [0, -3], [0, -4], [0, -5], [0, -6], [0, -7], [0, -8]],
-        Koma.keima: [[-1, -2], [1, -2]],
-        Koma.gin: [[-1, -1], [0, -1], [1, -1], [-1, 1], [1, 1]],
-        Koma.kin: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [0, 1]],
-        Koma.kaku: [[-8, -8], [8,-8], [-7,-7], [7, -7], [-6, -6], [6, -6], [-5, -5], [5, -5], [-4, -4], [4, -4], [-3, -3], [3, -3], [-2, -2], [2, -2], [-1, -1], [1, -1], [-1, 1], [1, 1], [-2, 2], [2, 2], [-3, 3], [3, 3], [-4, 4], [4, 4], [-5, 5], [5, 5], [-6, 6], [6, 6], [-7, 7], [7, 7], [-8, 8], [8, 8]],
-        Koma.hisha: [[0, -8], [0, -7], [0, -6], [0, -5], [0, -4], [0, -3], [0, -2], [0, -1], [-8, 0], [-7, 0], [-6, 0], [-5, 0], [-4, 0], [-3, 0], [-2, 0], [-1, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8]],
-        Koma.gyoku: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]],
+    Koma.fu: [[0, -1]],
+    Koma.kyosha: [[0, -1], [0, -2], [0, -3], [0, -4], [0, -5], [0, -6], [0, -7], [0, -8]],
+    Koma.keima: [[-1, -2], [1, -2]],
+    Koma.gin: [[-1, -1], [0, -1], [1, -1], [-1, 1], [1, 1]],
+    Koma.kin: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [0, 1]],
+    Koma.kaku: [[-8, -8], [8, -8], [-7, -7], [7, -7], [-6, -6], [6, -6], [-5, -5], [5, -5], [-4, -4], [4, -4], [-3, -3], [3, -3], [-2, -2], [2, -2], [-1, -1], [1, -1], [-1, 1], [1, 1], [-2, 2], [2, 2], [-3, 3], [3, 3], [-4, 4], [4, 4], [-5, 5], [5, 5], [-6, 6], [6, 6], [-7, 7], [7, 7], [-8, 8], [8, 8]],
+    Koma.hisha: [[0, -8], [0, -7], [0, -6], [0, -5], [0, -4], [0, -3], [0, -2], [0, -1], [-8, 0], [-7, 0], [-6, 0], [-5, 0], [-4, 0], [-3, 0], [-2, 0], [-1, 0], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0], [8, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8]],
+    Koma.gyoku: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]],
 }
-movable_positions[Koma.promoted_fu] = movable_positions[Koma.promoted_kyosha] = movable_positions[Koma.promoted_kyosha] = movable_positions[Koma.promoted_gin] = movable_positions[Koma.kin]
-movable_positions[Koma.promoted_kaku] = movable_positions[Koma.kaku] + [[0, -1], [-1, 0], [1, 0], [0, 1]]
-movable_positions[Koma.promoted_hisha] = movable_positions[Koma.hisha] + [[-1, -1], [1, -1], [-1, 1], [1, 1]]
+movable_positions[Koma.promoted_fu] = movable_positions[Koma.promoted_kyosha] = movable_positions[
+    Koma.promoted_kyosha] = movable_positions[Koma.promoted_gin] = movable_positions[Koma.kin]
+movable_positions[Koma.promoted_kaku] = movable_positions[
+    Koma.kaku] + [[0, -1], [-1, 0], [1, 0], [0, 1]]
+movable_positions[Koma.promoted_hisha] = movable_positions[
+    Koma.hisha] + [[-1, -1], [1, -1], [-1, 1], [1, 1]]
 
 movable_positions[Koma.opponent_fu] = [[0, 1]]
-movable_positions[Koma.opponent_kyosha] = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8]]
+movable_positions[Koma.opponent_kyosha] = [
+    [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8]]
 movable_positions[Koma.opponent_keima] = [[1, 2], [-1, 2]]
-movable_positions[Koma.opponent_gin] = [[1, 1], [0, 1], [-1, 1], [1, -1], [-1, -1]]
-movable_positions[Koma.opponent_kin] = [[1, 1], [0, 1], [-1, 1], [1, 0], [-1, 0], [0, -1]]
+movable_positions[Koma.opponent_gin] = [
+    [1, 1], [0, 1], [-1, 1], [1, -1], [-1, -1]]
+movable_positions[Koma.opponent_kin] = [
+    [1, 1], [0, 1], [-1, 1], [1, 0], [-1, 0], [0, -1]]
 movable_positions[Koma.opponent_kaku] = movable_positions[Koma.kaku]
 movable_positions[Koma.opponent_hisha] = movable_positions[Koma.hisha]
 movable_positions[Koma.opponent_gyoku] = movable_positions[Koma.gyoku]
 
-movable_positions[Koma.opponent_promoted_fu] = movable_positions[Koma.opponent_promoted_kyosha] = movable_positions[Koma.opponent_promoted_keima] = movable_positions[Koma.opponent_promoted_gin] = movable_positions[Koma.opponent_kin]
+movable_positions[Koma.opponent_promoted_fu] = movable_positions[Koma.opponent_promoted_kyosha] = movable_positions[
+    Koma.opponent_promoted_keima] = movable_positions[Koma.opponent_promoted_gin] = movable_positions[Koma.opponent_kin]
 
-movable_positions[Koma.opponent_promoted_kaku] = movable_positions[Koma.promoted_kaku]
-movable_positions[Koma.opponent_promoted_hisha] = movable_positions[Koma.promoted_hisha]
-
+movable_positions[Koma.opponent_promoted_kaku] = movable_positions[
+    Koma.promoted_kaku]
+movable_positions[Koma.opponent_promoted_hisha] = movable_positions[
+    Koma.promoted_hisha]
