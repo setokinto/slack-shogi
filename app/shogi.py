@@ -7,6 +7,7 @@ from app.modules.shogi_input import ShogiInput
 from app.modules.shogi_output import ShogiOutput
 from app.slack_utils.user import User
 
+
 @respond_to('start with <?@?([\d\w_-]+)>?')
 def start_shogi(message, opponent_name):
     slacker = message._client.webapi
@@ -16,7 +17,8 @@ def start_shogi(message, opponent_name):
     own_id = message.body["user"]
     opponent_id = user.username_to_id(opponent_name)
     if opponent_id is None:
-        # In case of mention. In mention, slack transform username to userid like @username to <@UOIFJ83F>
+        # In case of mention. In mention, slack transform username to userid
+        # like @username to <@UOIFJ83F>
         opponent_id = opponent_name
 
     if not user.user_in_channel(opponent_id, channel_id):
@@ -24,12 +26,12 @@ def start_shogi(message, opponent_name):
         return
 
     shogi = ShogiInput.init(channel_id=channel_id, users=[{
-            "id": own_id,
-            "name": user.id_to_username(own_id),
-            }, {
-            "id": opponent_id,
-            "name": user.id_to_username(opponent_id),
-        }
+        "id": own_id,
+        "name": user.id_to_username(own_id),
+    }, {
+        "id": opponent_id,
+        "name": user.id_to_username(opponent_id),
+    }
     ])
 
     if shogi is None:
@@ -57,9 +59,11 @@ koma_names = [
 
 koma_names_string_regex = "|".join(koma_names)
 
-@respond_to("([一二三四五六七八九123456789１２３４５６７８９]{2})?(同)?("+koma_names_string_regex+")([上右下左寄直打]{1,2})?つ?(成)?")
+
+@respond_to("([一二三四五六七八九123456789１２３４５６７８９]{2})?(同)?(" + koma_names_string_regex + ")([上右下左寄直打]{1,2})?つ?(成)?")
 def koma_move(message, position, dou, koma, sub_position=None, promote=None):
-    movement_str = "".join([x for x in [position, dou, koma, sub_position, promote] if x is not None])
+    movement_str = "".join(
+        [x for x in [position, dou, koma, sub_position, promote] if x is not None])
     channel_id = message.body["channel"]
     if not ShogiInput.exists(channel_id):
         message.reply("start withから初めてね")
@@ -76,6 +80,7 @@ def koma_move(message, position, dou, koma, sub_position=None, promote=None):
         board_str = ShogiOutput.make_board_emoji(board)
         message.send(board_str)
 
+
 @respond_to("今?.*の?.*状態.*を?教.*え?て?")
 @respond_to("現局面.*")
 @respond_to("局面.*")
@@ -88,6 +93,7 @@ def board_info(message):
     board = ShogiInput.get_shogi_board(channel_id)
     board_str = ShogiOutput.make_board_emoji(board)
     message.send(board_str)
+
 
 @respond_to(".*降参.*")
 @respond_to(".*resign.*")
@@ -106,4 +112,3 @@ def resign(message):
     board_str = ShogiOutput.make_board_emoji(board)
     message.send(board_str)
     ShogiInput.clear(channel_id)
-

@@ -15,70 +15,70 @@ str2info = {
 }
 
 str2koma = {
-    "歩" : Koma.fu, "と" : Koma.promoted_fu,
-    "成歩" : Koma.promoted_fu, "成と" : Koma.promoted_fu,
+    "歩": Koma.fu, "と": Koma.promoted_fu,
+    "成歩": Koma.promoted_fu, "成と": Koma.promoted_fu,
 
-    "香" : Koma.kyosha, "香車" : Koma.kyosha,
-    "成香" : Koma.promoted_kyosha, "成香車" : Koma.promoted_kyosha,
+    "香": Koma.kyosha, "香車": Koma.kyosha,
+    "成香": Koma.promoted_kyosha, "成香車": Koma.promoted_kyosha,
 
-    "桂" : Koma.keima, "桂馬" : Koma.keima,
-    "成桂" : Koma.promoted_keima, "成桂馬" : Koma.promoted_keima,
+    "桂": Koma.keima, "桂馬": Koma.keima,
+    "成桂": Koma.promoted_keima, "成桂馬": Koma.promoted_keima,
 
-    "銀" : Koma.gin, "銀将" : Koma.gin,
-    "成銀" : Koma.promoted_gin, "成銀将" : Koma.promoted_gin,
+    "銀": Koma.gin, "銀将": Koma.gin,
+    "成銀": Koma.promoted_gin, "成銀将": Koma.promoted_gin,
 
-    "金" : Koma.kin, "金将" : Koma.kin,
-    "成金" : Koma.kin, "成金将" : Koma.kin,
+    "金": Koma.kin, "金将": Koma.kin,
+    "成金": Koma.kin, "成金将": Koma.kin,
 
-    "角" : Koma.kaku, "角行" : Koma.kaku, "馬" : Koma.promoted_kaku,
-    "成角" : Koma.promoted_kaku, "成角行" : Koma.promoted_kaku,
-    "成馬" : Koma.promoted_kaku,
+    "角": Koma.kaku, "角行": Koma.kaku, "馬": Koma.promoted_kaku,
+    "成角": Koma.promoted_kaku, "成角行": Koma.promoted_kaku,
+    "成馬": Koma.promoted_kaku,
 
-    "飛" : Koma.hisha, "飛車" : Koma.hisha, "龍" : Koma.promoted_hisha,
-    "成飛" : Koma.promoted_hisha, "成飛車" : Koma.promoted_hisha,
-    "成龍" : Koma.promoted_hisha,
+    "飛": Koma.hisha, "飛車": Koma.hisha, "龍": Koma.promoted_hisha,
+    "成飛": Koma.promoted_hisha, "成飛車": Koma.promoted_hisha,
+    "成龍": Koma.promoted_hisha,
 
-    "王" : Koma.gyoku, "玉" : Koma.gyoku,
-    "王将" : Koma.gyoku, "玉将" : Koma.gyoku,
-    "成王" : Koma.gyoku, "成玉" : Koma.gyoku,
-    "成王将" : Koma.gyoku, "成玉将" : Koma.gyoku
+    "王": Koma.gyoku, "玉": Koma.gyoku,
+    "王将": Koma.gyoku, "玉将": Koma.gyoku,
+    "成王": Koma.gyoku, "成玉": Koma.gyoku,
+    "成王将": Koma.gyoku, "成玉将": Koma.gyoku
 }
 
 str2oppkoma = {
-    "歩" : Koma.opponent_fu, "と" : Koma.opponent_promoted_fu,
-    "成歩" : Koma.opponent_promoted_fu, "成と" : Koma.opponent_promoted_fu,
+    "歩": Koma.opponent_fu, "と": Koma.opponent_promoted_fu,
+    "成歩": Koma.opponent_promoted_fu, "成と": Koma.opponent_promoted_fu,
 
-    "香" : Koma.opponent_kyosha, "香車" : Koma.opponent_kyosha,
-    "成香" : Koma.opponent_promoted_kyosha,
-    "成香車" : Koma.opponent_promoted_kyosha,
+    "香": Koma.opponent_kyosha, "香車": Koma.opponent_kyosha,
+    "成香": Koma.opponent_promoted_kyosha,
+    "成香車": Koma.opponent_promoted_kyosha,
 
-    "桂" : Koma.opponent_keima, "桂馬" : Koma.opponent_keima,
-    "成桂" : Koma.opponent_promoted_keima,
-    "成桂馬" : Koma.opponent_promoted_keima,
+    "桂": Koma.opponent_keima, "桂馬": Koma.opponent_keima,
+    "成桂": Koma.opponent_promoted_keima,
+    "成桂馬": Koma.opponent_promoted_keima,
 
-    "銀" : Koma.opponent_gin, "銀将" : Koma.opponent_gin,
-    "成銀" : Koma.opponent_promoted_gin,
-    "成銀将" : Koma.opponent_promoted_gin,
+    "銀": Koma.opponent_gin, "銀将": Koma.opponent_gin,
+    "成銀": Koma.opponent_promoted_gin,
+    "成銀将": Koma.opponent_promoted_gin,
 
-    "金" : Koma.opponent_kin, "金将" : Koma.opponent_kin,
-    "成金" : Koma.opponent_kin, "成金将" : Koma.opponent_kin,
+    "金": Koma.opponent_kin, "金将": Koma.opponent_kin,
+    "成金": Koma.opponent_kin, "成金将": Koma.opponent_kin,
 
-    "角" : Koma.opponent_kaku, "角行" : Koma.opponent_kaku,
-    "馬" : Koma.opponent_promoted_kaku,
-    "成角" : Koma.opponent_promoted_kaku,
-    "成角行" : Koma.opponent_promoted_kaku,
-    "成馬" : Koma.opponent_promoted_kaku,
+    "角": Koma.opponent_kaku, "角行": Koma.opponent_kaku,
+    "馬": Koma.opponent_promoted_kaku,
+    "成角": Koma.opponent_promoted_kaku,
+    "成角行": Koma.opponent_promoted_kaku,
+    "成馬": Koma.opponent_promoted_kaku,
 
-    "飛" : Koma.opponent_hisha, "飛車" : Koma.opponent_hisha,
-    "龍" : Koma.opponent_promoted_hisha,
-    "成飛" : Koma.opponent_promoted_hisha,
-    "成飛車" : Koma.opponent_promoted_hisha,
-    "成龍" : Koma.opponent_promoted_hisha,
+    "飛": Koma.opponent_hisha, "飛車": Koma.opponent_hisha,
+    "龍": Koma.opponent_promoted_hisha,
+    "成飛": Koma.opponent_promoted_hisha,
+    "成飛車": Koma.opponent_promoted_hisha,
+    "成龍": Koma.opponent_promoted_hisha,
 
-    "王" : Koma.opponent_gyoku, "玉" : Koma.opponent_gyoku,
-    "王将" : Koma.opponent_gyoku, "玉将" : Koma.opponent_gyoku,
-    "成王" : Koma.opponent_gyoku, "成玉" : Koma.opponent_gyoku,
-    "成王将" : Koma.opponent_gyoku, "成玉将" : Koma.opponent_gyoku
+    "王": Koma.opponent_gyoku, "玉": Koma.opponent_gyoku,
+    "王将": Koma.opponent_gyoku, "玉将": Koma.opponent_gyoku,
+    "成王": Koma.opponent_gyoku, "成玉": Koma.opponent_gyoku,
+    "成王将": Koma.opponent_gyoku, "成玉将": Koma.opponent_gyoku
 }
 
 koma_names = [
@@ -92,7 +92,8 @@ koma_names = [
     "王", "玉", "王将", "玉将"
 ]
 
-koma_names += list(map(lambda n: "成"+n, koma_names))
+koma_names += list(map(lambda n: "成" + n, koma_names))
+
 
 def transposition_num(num):
     """
@@ -101,7 +102,9 @@ def transposition_num(num):
     """
     return (4 - num) + 4
 
+
 class ParseInput:
+
     @staticmethod
     def parse(input_str, shogi):
         """
@@ -148,8 +151,7 @@ class ParseInput:
                 # TODO : Send Error Message
                 return False
 
-            input_str = input_str[2:] # remove number of axis
-
+            input_str = input_str[2:]  # remove number of axis
 
         # setting from flag
         from_flag = 0
@@ -223,7 +225,7 @@ class ParseInput:
             turn = is_first_turn  # for pep
             # "上"
             if from_flag == 1:
-                for t in movable_komas: # t => "t"arget
+                for t in movable_komas:  # t => "t"arget
                     if (turn and t[1] > to_y) or \
                        (not turn and t[1] < to_y):
                         from_x, from_y = t
@@ -313,4 +315,3 @@ class ParseInput:
             if from_flag != 0:
                 return False
         return (from_x, from_y, to_x, to_y, promote, koma)
-

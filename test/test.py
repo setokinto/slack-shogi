@@ -1,7 +1,9 @@
 import unittest
 from app.for_test import ForTest
 
+
 class TestTest(unittest.TestCase):
+
     def setUp(self):
         pass
 
@@ -10,4 +12,3 @@ class TestTest(unittest.TestCase):
 
     def test_return_1(self):
         self.assertEqual(ForTest().return1(), 1)
-

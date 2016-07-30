@@ -7,6 +7,7 @@ from urllib import request, parse
 
 env.hosts = settings.DEPLOY_HOSTS
 
+
 def deploy():
     slack("Deploy Started")
     with cd("/var/bot/slack-shogi"):
@@ -14,8 +15,9 @@ def deploy():
         run("supervisorctl reload")
     slack("Deploy Finished")
 
+
 def slack(text):
     if settings.WEBHOOK_URL:
-        payload = ("payload={\"text\": \""+parse.quote(text)+"\", \"username\": \"Mr.deploy\"}").encode("utf-8")
+        payload = ("payload={\"text\": \"" + parse.quote(text) +
+                   "\", \"username\": \"Mr.deploy\"}").encode("utf-8")
         request.urlopen(url=settings.WEBHOOK_URL, data=payload)
-
