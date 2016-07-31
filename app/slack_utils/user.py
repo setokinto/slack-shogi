@@ -22,8 +22,10 @@ class User:  # TODO: rename this class
                 return user["name"]
 
     def user_in_channel(self, user_id, channel_id):
-        users = self._slacker.channels.info(channel_id).body[
-            "channel"]["members"]
+        if channel_id[0] == "G":
+            users = self._slacker.groups.info(channel_id).body["group"]["members"]
+        else:
+            users = self._slacker.channels.info(channel_id).body["channel"]["members"]
         for user in users:
             if user == user_id:
                 return True

@@ -11,6 +11,10 @@ class MockedSlacker:
         return MockedUser()
 
     @property
+    def groups(self):
+        return MockedGroup()
+
+    @property
     def channels(self):
         return MockedChannel()
 
@@ -71,10 +75,42 @@ class MockedUser:
         }
         )
 
+class MockedGroup:
+
+    def info(self, group_id):
+        if not group_id[0] == "G":
+            raise Exception()
+        return MockedBody(
+            {
+                "ok": True,
+                "group": {
+                    "id": "G023BECGF",
+                    "name": "fun",
+                    "created": 1360782804,
+                    "creator": "U024BE7LH",
+                    "is_archived": False,
+                    "is_general": False,
+                    "is_member": True,
+                    "is_starred": True,
+                    "members": [
+                            "U023BECGA",
+                    ],
+                    "topic": {},
+                    "purpose": {},
+                    "last_read": "1401383885.000061",
+                    "latest": {},
+                    "unread_count": 0,
+                    "unread_count_display": 0
+                }
+            }
+        )
 
 class MockedChannel:
 
     def info(self, channel_id):
+        if not channel_id[0] == "C":
+            raise Exception()
+        
         return MockedBody(
             {
                 "ok": True,
@@ -148,3 +184,12 @@ class UserTest(unittest.TestCase):
     def test_user_in_channel_return_False_when_user_not_exists(self):
         notexists = self.user.user_in_channel("UNONONONONO", "C023BECGA")
         self.assertFalse(notexists)
+
+    def test_user_in_privatechannel_return_True_when_user_exists(self):
+        exists = self.user.user_in_channel("U023BECGA", "G023BECGF")
+        self.assertTrue(exists)
+
+    def test_user_in_private_channel_return_False_when_user_not_exists(self):
+        notexists = self.user.user_in_channel("UNONONONONO", "G023BECGF")
+        self.assertFalse(notexists)
+        
