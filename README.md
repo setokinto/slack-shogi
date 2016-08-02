@@ -12,11 +12,11 @@
 `@shogibot: resign` or `@shogibot: 参りました`  
 And more!
 
-If you want to try, use this command `@shogibot: start with @your_user_name`
+If you want to try it, use this command `@shogibot: start with @your_user_name`
 
 # How to input shogi emojis
-We proide a images for playing shogi, and script to input images to your slack team.
-The script required your slack id and password because api which saves a new emoji does not exist.
+We proide an images for playing shogi, and a script to input images to your slack team.
+The script required your slack id and password because an api which saves a new emoji does not exist.
 Emoji example is here:
 ![Shogi](https://raw.githubusercontent.com/setokinto/slack-shogi/master/input_emojis/images/example.png)
 
