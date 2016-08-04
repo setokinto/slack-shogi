@@ -10,10 +10,13 @@ env.hosts = settings.DEPLOY_HOSTS
 
 def deploy():
     slack("Deploy Started")
-    with cd("/var/bot/slack-shogi"):
-        run("git pull")
-        run("supervisorctl reload")
-    slack("Deploy Finished")
+    try:
+        with cd("/var/bot/slack-shogi"):
+            run("git pull")
+            run("supervisorctl reload")
+        slack("Deploy Finished")
+    except:
+        slack("Deploy Failed")
 
 
 def slack(text):
@@ -21,3 +24,4 @@ def slack(text):
         payload = ("payload={\"text\": \"" + parse.quote(text) +
                    "\", \"username\": \"Mr.deploy\"}").encode("utf-8")
         request.urlopen(url=settings.WEBHOOK_URL, data=payload)
+
