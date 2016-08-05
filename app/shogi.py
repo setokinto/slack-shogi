@@ -35,7 +35,7 @@ def start_shogi(channel, message, opponent_name):
     }])
 
     if shogi is None:
-        message.reply("Error, sorry")
+        message.reply("Shogi started already by a user. Sorry.\nIf you want to quit shogi which already exists, please say this command `resign`")
     else:
         message.reply("Shogi started: " + shogi.id)
         board = ShogiInput.get_shogi_board(channel.channel_id)
