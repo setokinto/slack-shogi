@@ -4,7 +4,6 @@ from app.modules.shogi_input import ShogiInput, UserDifferentException, KomaCann
 from app.modules.shogi import Koma
 
 
-
 class ShogiTest(unittest.TestCase):
 
     def setUp(self):
@@ -106,4 +105,20 @@ class ShogiTest(unittest.TestCase):
             ShogiInput.move("34歩", channel_id, shogi.first_user_id)
         ShogiInput.setAllMode(channel_id)
         ShogiInput.move("34歩", channel_id, shogi.first_user_id)
+
+    def test_matta(self):
+        channel_id = "test_matta"
+        shogi = ShogiInput.init(channel_id, [{
+            "id": "user1",
+            "name": "user1name",
+        }, {
+            "id": "user2",
+            "name": "user2name",
+        }])
+        ShogiInput.move("76歩", channel_id, shogi.first_user_id)
+        self.assertEqual(shogi.board[5][2], Koma.fu)
+        ShogiInput.matta(channel_id, shogi.second_user_id)
+        self.assertEqual(shogi.board[5][2], Koma.empty)
+        ShogiInput.move("76歩", channel_id, shogi.first_user_id)
+        self.assertEqual(shogi.board[5][2], Koma.fu)
 

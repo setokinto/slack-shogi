@@ -113,3 +113,14 @@ def resign(channel, message):
     message.send(board_str)
     ShogiInput.clear(channel.channel_id)
 
+@respond_to("待った")
+@channel_info
+@should_exist_shogi
+def matta(channel, message):
+    ShogiInput.matta(channel.channel_id, channel.own_id)
+    message.send("mattaed")
+    board = ShogiInput.get_shogi_board(channel.channel_id)
+    board_str = ShogiOutput.make_board_emoji(board)
+    message.send(board_str)
+    
+
