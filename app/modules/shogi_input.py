@@ -7,6 +7,14 @@ from app.modules.shogi import Shogi as ShogiModule
 from app.modules.parse_input import ParseInput
 
 
+class UserDifferentException(Exception):
+    pass
+
+
+class KomaCannotMoveException(Exception):
+    pass
+
+
 class ShogiManager:
 
     def __init__(self):
@@ -79,25 +87,23 @@ class ShogiInput:
         shogi = ShogiInput.manager.get_shogi(channel_id)
         if shogi.first:
             if not shogi.first_user_id == user_id:
-                return False  # TODO: DifferentUserException
+                raise UserDifferentException()
         else:
             if not shogi.second_user_id == user_id:
-                return False  # TODO: DifferentUserException
+                raise UserDifferentException()
         # TODO: use Shogi object in this file and test
         movement = ParseInput.parse(movement_str, shogi.shogi)
         if not movement:
-            return False
-        else:
-            from_x, from_y, to_x, to_y, promote, koma = movement
+            raise KomaCannotMoveException()
+
+        from_x, from_y, to_x, to_y, promote, koma = movement
 
         if from_x == -1 and from_y == -1 and shogi.droppable(koma, to_x, to_y):
             shogi.drop(koma, to_x, to_y)
-            return True
         elif shogi.movable(from_x, from_y, to_x, to_y, promote):
             shogi.move(from_x, from_y, to_x, to_y, promote)
-            return True
         else:
-            return False
+            raise KomaCannotMoveException()
 
     @staticmethod
     def basic_move(channel_id, from_x, from_y, to_x, to_y, promote):
@@ -160,3 +166,4 @@ class Shogi:
     @property
     def board(self):
         return self.shogi.board
+

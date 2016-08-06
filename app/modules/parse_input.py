@@ -315,3 +315,4 @@ class ParseInput:
             if from_flag != 0:
                 return False
         return (from_x, from_y, to_x, to_y, promote, koma)
+
