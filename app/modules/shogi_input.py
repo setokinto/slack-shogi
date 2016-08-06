@@ -91,8 +91,7 @@ class ShogiInput:
         else:
             if not shogi.second_user_id == user_id:
                 raise UserDifferentException()
-        # TODO: use Shogi object in this file and test
-        movement = ParseInput.parse(movement_str, shogi.shogi)
+        movement = ParseInput.parse(movement_str, shogi)
         if not movement:
             raise KomaCannotMoveException()
 
@@ -158,6 +157,9 @@ class Shogi:
 
     def droppable(self, koma, to_x, to_y):
         return self.shogi.droppable(koma, to_x, to_y)
+
+    def find_koma(self, koma):
+        return self.shogi.find_koma(koma)
 
     @property
     def first(self):
