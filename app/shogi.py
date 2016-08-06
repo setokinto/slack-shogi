@@ -4,7 +4,7 @@ import functools
 
 from slackbot.bot import respond_to
 
-from app.modules.shogi_input import ShogiInput
+from app.modules.shogi_input import ShogiInput, UserDifferentException, KomaCannotMoveException
 from app.modules.shogi_output import ShogiOutput
 from app.slack_utils.user import User
 from app.helper import channel_info, should_exist_shogi
@@ -66,12 +66,13 @@ def koma_move(channel, message, position, dou, koma, sub_position=None, promote=
     movement_str = "".join(
         [x for x in [position, dou, koma, sub_position, promote] if x is not None])
 
-    if ShogiInput.move(movement_str, channel.channel_id, channel.own_id):
-        board = ShogiInput.get_shogi_board(channel.channel_id)
-        board_str = ShogiOutput.make_board_emoji(board)
-        message.send(board_str)
-    else:
-        message.reply("You cannot move this!!")
+    try:
+        ShogiInput.move(movement_str, channel.channel_id, channel.own_id)
+    except UserDifferentException:
+        message.reply("You cannot move this because *it's not your turn*")
+    except KomaCannotMoveException:
+        message.reply("You cannot move this with your message *{}*".format(movement_str))
+    finally:
         board = ShogiInput.get_shogi_board(channel.channel_id)
         board_str = ShogiOutput.make_board_emoji(board)
         message.send(board_str)
