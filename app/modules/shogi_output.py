@@ -49,7 +49,7 @@ class ShogiOutput:
         output_text += "後手 {} ： ".format(board_info["info"]["second"]["name"])
         cnt = 0
         if board_info["second"]:
-            for koma in board_info["second"]:
+            for koma in sorted(board_info["second"]):
                 cnt += 1
                 # if a number of motigoma is more than 7,
                 # go to next line.
@@ -84,7 +84,7 @@ class ShogiOutput:
         output_text += "先手 {} ： ".format(board_info["info"]["first"]["name"])
         cnt = 0
         if board_info["first"]:
-            for koma in board_info["first"]:
+            for koma in sorted(board_info["first"]):
                 cnt += 1
                 # if a number of motigoma is more than 7,
                 # go to next line.
