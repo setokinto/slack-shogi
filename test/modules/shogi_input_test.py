@@ -92,3 +92,18 @@ class ShogiTest(unittest.TestCase):
         with self.assertRaises(KomaCannotMoveException):
             ShogiInput.move("Wow, it's great.", channel_id, shogi.first_user_id)
 
+    def test_set_any_user_validator(self):
+        channel_id = "test_set_validotr"
+        shogi = ShogiInput.init(channel_id, [{
+            "id": "user1",
+            "name": "user1name",
+        }, {
+            "id": "user2",
+            "name": "user2name",
+        }])
+        ShogiInput.move("76歩", channel_id, shogi.first_user_id)
+        with self.assertRaises(UserDifferentException):
+            ShogiInput.move("34歩", channel_id, shogi.first_user_id)
+        ShogiInput.setAllMode(channel_id)
+        ShogiInput.move("34歩", channel_id, shogi.first_user_id)
+

@@ -5,7 +5,8 @@ import random
 from app.slack_utils.user import User as UserFinder
 from app.modules.shogi import Shogi as ShogiModule
 from app.modules.parse_input import ParseInput
-from app.validator import BasicUserValidator
+from app.validator import BasicUserValidator, AllPassUserValidator
+
 
 class UserDifferentException(Exception):
     pass
@@ -102,6 +103,12 @@ class ShogiInput:
             raise KomaCannotMoveException()
 
     @staticmethod
+    def setAllMode(channel_id):
+        # TODO: is it need validation?
+        shogi = ShogiInput.manager.get_shogi(channel_id)
+        shogi.set_validator(AllPassUserValidator())
+
+    @staticmethod
     def basic_move(channel_id, from_x, from_y, to_x, to_y, promote):
         shogi = ShogiInput.manager.get_shogi(channel_id)
         shogi.move(from_x, from_y, to_x, to_y, promote)
@@ -161,6 +168,9 @@ class Shogi:
 
     def validate(self, shogi, user_id):
         return self._validator.validate(shogi, user_id)
+
+    def set_validator(self, validator):
+        self._validator = validator
 
     @property
     def first(self):
