@@ -1,9 +1,9 @@
 
 
-from enum import Enum
+from enum import IntEnum
 
 
-class Koma(Enum):
+class Koma(IntEnum):
     empty = 0
     fu = 0x01
     kyosha = 0x02
