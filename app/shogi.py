@@ -77,6 +77,13 @@ def koma_move(channel, message, position, dou, koma, sub_position=None, promote=
         board_str = ShogiOutput.make_board_emoji(board)
         message.send(board_str)
 
+@respond_to("set (all) mode")
+@channel_info
+@should_exist_shogi
+def set_mode(channel, message, arg):
+    if arg == "all":
+        ShogiInput.setAllMode(channel.channel_id)
+        message.reply("Done! All member can move now!")
 
 @respond_to("今?.*の?.*状態.*を?教.*え?て?")
 @respond_to("現局面.*")

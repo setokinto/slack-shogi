@@ -5,6 +5,7 @@ import random
 from app.slack_utils.user import User as UserFinder
 from app.modules.shogi import Shogi as ShogiModule
 from app.modules.parse_input import ParseInput
+from app.validator import BasicUserValidator, AllPassUserValidator
 
 
 class UserDifferentException(Exception):
@@ -85,12 +86,9 @@ class ShogiInput:
     @staticmethod
     def move(movement_str, channel_id, user_id):
         shogi = ShogiInput.manager.get_shogi(channel_id)
-        if shogi.first:
-            if not shogi.first_user_id == user_id:
-                raise UserDifferentException()
-        else:
-            if not shogi.second_user_id == user_id:
-                raise UserDifferentException()
+        if not shogi.validate(shogi, user_id):
+            raise UserDifferentException()
+
         movement = ParseInput.parse(movement_str, shogi)
         if not movement:
             raise KomaCannotMoveException()
@@ -103,6 +101,12 @@ class ShogiInput:
             shogi.move(from_x, from_y, to_x, to_y, promote)
         else:
             raise KomaCannotMoveException()
+
+    @staticmethod
+    def setAllMode(channel_id):
+        # TODO: is it need validation?
+        shogi = ShogiInput.manager.get_shogi(channel_id)
+        shogi.set_validator(AllPassUserValidator())
 
     @staticmethod
     def basic_move(channel_id, from_x, from_y, to_x, to_y, promote):
@@ -135,7 +139,7 @@ class ShogiInput:
 
 class Shogi:
 
-    def __init__(self, channel_id, users):
+    def __init__(self, channel_id, users, validator=BasicUserValidator()):
         self.shogi = ShogiModule()
         self.channel_id = channel_id
         self.user_ids = [x["id"] for x in users]
@@ -145,6 +149,7 @@ class Shogi:
         self.second_user_id = users[1]["id"]
         self.second_user_name = users[1]["name"]
         self.id = uuid.uuid4().hex
+        self._validator = validator
 
     def move(self, from_x, from_y, to_x, to_y, promote):
         self.shogi.move(from_x, from_y, to_x, to_y, promote)
@@ -160,6 +165,12 @@ class Shogi:
 
     def find_koma(self, koma):
         return self.shogi.find_koma(koma)
+
+    def validate(self, shogi, user_id):
+        return self._validator.validate(shogi, user_id)
+
+    def set_validator(self, validator):
+        self._validator = validator
 
     @property
     def first(self):
