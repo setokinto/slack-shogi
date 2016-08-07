@@ -139,15 +139,10 @@ class ShogiInput:
 
     @staticmethod
     def matta(channel_id, user_id):
-        validate = True # TODO REPLACE THIS
-        if not validate:
-            return False
         shogi = ShogiInput.manager.get_shogi(channel_id)
+        if not shogi.validate(shogi, user_id):
+            raise UserDifferentException()
         shogi.matta()
-        
-
-        
-        
 
 
 class Shogi:
@@ -188,6 +183,8 @@ class Shogi:
         self._validator = validator
 
     def matta(self):
+        if len(self.kifu.kifu) == 0:
+            raise KomaCannotMoveException
         self.kifu.pop()
         self.shogi = ShogiModule()
         for kifu in self.kifu.kifu:
