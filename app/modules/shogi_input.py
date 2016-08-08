@@ -125,12 +125,12 @@ class ShogiInput:
             "board": shogi.board,
             "info": {
                 "first": {
-                    "id": shogi.first_user_id,
-                    "name": shogi.first_user_name,
+                    "id": shogi.first_user.id,
+                    "name": shogi.first_user.name,
                 },
                 "second": {
-                    "id": shogi.second_user_id,
-                    "name": shogi.second_user_name,
+                    "id": shogi.second_user.id,
+                    "name": shogi.second_user.name,
                 }
             },
             "turn": shogi.first,
@@ -145,6 +145,13 @@ class ShogiInput:
         shogi.matta()
 
 
+class ShogiUser:
+
+    def __init__(self, user_id, user_name):
+        self.id = user_id
+        self.name = user_name
+
+
 class Shogi:
 
     def __init__(self, channel_id, users, validator=BasicUserValidator()):
@@ -152,10 +159,8 @@ class Shogi:
         self.channel_id = channel_id
         self.user_ids = [x["id"] for x in users]
         random.shuffle(users)
-        self.first_user_id = users[0]["id"]
-        self.first_user_name = users[0]["name"]
-        self.second_user_id = users[1]["id"]
-        self.second_user_name = users[1]["name"]
+        self.first_user = ShogiUser(users[0]["id"], users[0]["name"])
+        self.second_user = ShogiUser(users[1]["id"], users[1]["name"])
         self.id = uuid.uuid4().hex
         self._validator = validator
         self.kifu = Kifu()

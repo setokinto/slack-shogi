@@ -11,10 +11,10 @@ class UserValidator(metaclass=ABCMeta):
 class BasicUserValidator(UserValidator):
     def validate(self, shogi, user_id):
         if shogi.first:
-            if not shogi.first_user_id == user_id:
+            if not shogi.first_user.id == user_id:
                 return False
         else:
-            if not shogi.second_user_id == user_id:
+            if not shogi.second_user.id == user_id:
                 return False
         return True
 
