@@ -6,6 +6,7 @@ from app.slack_utils.user import User as UserFinder
 from app.modules.shogi import Shogi as ShogiModule
 from app.modules.parse_input import ParseInput
 from app.validator import BasicUserValidator, AllPassUserValidator
+from app.kifu import Kifu
 
 
 class UserDifferentException(Exception):
@@ -136,6 +137,13 @@ class ShogiInput:
             "_shogi": shogi,
         }
 
+    @staticmethod
+    def matta(channel_id, user_id):
+        shogi = ShogiInput.manager.get_shogi(channel_id)
+        if not shogi.validate(shogi, user_id):
+            raise UserDifferentException()
+        shogi.matta()
+
 
 class Shogi:
 
@@ -150,9 +158,11 @@ class Shogi:
         self.second_user_name = users[1]["name"]
         self.id = uuid.uuid4().hex
         self._validator = validator
+        self.kifu = Kifu()
 
     def move(self, from_x, from_y, to_x, to_y, promote):
         self.shogi.move(from_x, from_y, to_x, to_y, promote)
+        self.kifu.add(from_x, from_y, to_x, to_y, promote)
 
     def drop(self, koma, to_x, to_y):
         self.shogi.drop(koma, to_x, to_y)
@@ -171,6 +181,15 @@ class Shogi:
 
     def set_validator(self, validator):
         self._validator = validator
+
+    def matta(self):
+        if len(self.kifu.kifu) == 0:
+            raise KomaCannotMoveException
+        self.kifu.pop()
+        self.shogi = ShogiModule()
+        for kifu in self.kifu.kifu:
+            from_x, from_y, to_x, to_y, promote = kifu
+            self.shogi.move(from_x, from_y, to_x, to_y, promote)
 
     @property
     def first(self):
