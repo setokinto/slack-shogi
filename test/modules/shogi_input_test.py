@@ -115,11 +115,11 @@ class ShogiTest(unittest.TestCase):
             "id": "user2",
             "name": "user2name",
         }])
-        ShogiInput.move("76歩", channel_id, shogi.first_user_id)
+        ShogiInput.move("76歩", channel_id, shogi.first_user.id)
         self.assertEqual(shogi.board[5][2], Koma.fu)
-        ShogiInput.matta(channel_id, shogi.second_user_id)
+        ShogiInput.matta(channel_id, shogi.second_user.id)
         self.assertEqual(shogi.board[5][2], Koma.empty)
-        ShogiInput.move("76歩", channel_id, shogi.first_user_id)
+        ShogiInput.move("76歩", channel_id, shogi.first_user.id)
         self.assertEqual(shogi.board[5][2], Koma.fu)
  
     def test_matta_for_UserDifferentException(self):
@@ -131,13 +131,13 @@ class ShogiTest(unittest.TestCase):
             "id": "user2",
             "name": "user2name",
         }])
-        ShogiInput.move("76歩", channel_id, shogi.first_user_id)
+        ShogiInput.move("76歩", channel_id, shogi.first_user.id)
         self.assertEqual(shogi.board[5][2], Koma.fu)
         with self.assertRaises(UserDifferentException):
-            ShogiInput.matta(channel_id, shogi.first_user_id)
-        ShogiInput.move("34歩", channel_id, shogi.second_user_id)
+            ShogiInput.matta(channel_id, shogi.first_user.id)
+        ShogiInput.move("34歩", channel_id, shogi.second_user.id)
         with self.assertRaises(UserDifferentException):
-            ShogiInput.matta(channel_id, shogi.second_user_id)
+            ShogiInput.matta(channel_id, shogi.second_user.id)
 
     def test_matta_for_KomaCannotMoveException(self):
         channel_id = "test_matta_for_KomaCannotMoveException"
@@ -149,5 +149,5 @@ class ShogiTest(unittest.TestCase):
             "name": "user2name",
         }])
         with self.assertRaises(KomaCannotMoveException):
-            ShogiInput.matta(channel_id, shogi.first_user_id)
+            ShogiInput.matta(channel_id, shogi.first_user.id)
 
