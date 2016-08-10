@@ -86,7 +86,7 @@ def set_mode(channel, message, arg):
         message.reply("Done! All member can move now!")
 
 @respond_to("今?.*の?.*状態.*を?教.*え?て?")
-@respond_to("現局面.*")
+@respond_to("now")
 @respond_to("局面.*")
 @respond_to("board")
 @channel_info
