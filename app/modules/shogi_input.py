@@ -204,3 +204,11 @@ class Shogi:
     def board(self):
         return self.shogi.board
 
+    @property
+    def last_move_x(self):
+        return self.shogi.last_move_x
+
+    @property
+    def last_move_y(self):
+        return self.shogi.last_move_y
+
