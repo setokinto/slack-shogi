@@ -95,134 +95,119 @@ y_number2emoji = {
 }
 
 
-x_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-y_labels = [9, 8, 7, 6, 5, 4, 3, 2, 1]
+def make_user_text(user_name, motigoma,
+                   is_first=True, is_turn=True, reverse=False):
+    return_text = ""
+    if is_turn:
+        return_text = "[手番]"
+
+    if is_first:
+        return_text += " 先手 {}  ".format(user_name)
+    else:
+        return_text += " 後手 {}  ".format(user_name)
+    user_info_char_num = len(return_text)  # for new line
+
+    if motigoma:
+        cnt = 0
+        for cur_koma in motigoma:
+            cnt += 1
+            if cnt == 5:
+                return_text += "\n" + (" " * user_info_char_num)
+                cnt = 1
+            if reverse:
+                return_text += koma2emoji_re[cur_koma] + " "
+            else:
+                return_text += koma2emoji[cur_koma] + " "
+    else:
+        return_text += "持ち駒なし"
+
+    return_text += "\n\n"
+    return return_text
+
+
+def make_board_info_text(board_info, is_number=False, reverse=False):
+    return_text = ""
+    x_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    y_labels = [9, 8, 7, 6, 5, 4, 3, 2, 1]
+
+    loop_iter = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    if reverse:
+        loop_iter.reverse()
+
+    if is_number and not reverse:
+        for y_label in y_labels:
+            return_text += y_number2emoji[y_label]
+        return_text += "\n"
+    for y in loop_iter:
+        if reverse:
+            return_text += y_number2emoji[list(reversed(y_labels))[y]]
+        for x in loop_iter:
+            cur_koma = board_info["board"][y][x]
+            if reverse and cur_koma != Koma.empty:
+                cur_koma = cur_koma.go_enemy()
+
+            if x == board_info["_shogi"].shogi.last_move_x and \
+               y == board_info["_shogi"].shogi.last_move_y:
+                return_text += koma2emoji[cur_koma].replace(
+                    emoji_prefix,
+                    emoji_prefix + "last_")
+            else:
+                return_text += koma2emoji[cur_koma]
+        if is_number and not reverse:
+            return_text += x_number2emoji[x_labels[y]]
+        return_text += "\n"
+
+    if reverse:
+        return_text += ":slackshogisss_blank:"
+        for x_label in x_labels:
+            return_text += x_number2emoji[x_label]
+    return_text += "\n"
+
+    return return_text
 
 
 class ShogiOutput:
-
     @staticmethod
     def make_board_emoji(board_info, is_number=False):
-        # second koma
-        output_text = ""
-        if not board_info["turn"]:
-            output_text = "[手番]"
+        out_text = ""
 
-        output_text += "後手 {} ： ".format(board_info["info"]["second"]["name"])
-        cnt = 0
-        if board_info["second"]:
-            for koma in sorted(board_info["second"]):
-                cnt += 1
-                # if a number of motigoma is more than 7,
-                # go to next line.
-                if cnt == 7:
-                    output_text += "\n　　    "
-                    cnt = 1
-                output_text += koma2emoji[koma] + " "
-        else:
-            output_text += "持ち駒なし"
-
-        output_text += "\n\n"
+        out_text += make_user_text(board_info["info"]["second"]["name"],
+                                   board_info["second"],
+                                   is_first=False,
+                                   is_turn=not board_info["turn"])
 
         # board
-        if is_number:
-            for y_label in y_labels:
-                output_text += y_number2emoji[y_label]
-            output_text += "\n"
-        for y in range(9):
-            for x in range(9):
-                if x == board_info["_shogi"].shogi.last_move_x and \
-                   y == board_info["_shogi"].shogi.last_move_y:
-                    output_text += koma2emoji[
-                        board_info["board"][y][x]
-                    ].replace(emoji_prefix,
-                              emoji_prefix + "last_"
-                              )
-                else:
-                    output_text += koma2emoji[board_info["board"][y][x]]
-            if is_number:
-                output_text += x_number2emoji[x_labels[y]]
-            output_text += "\n"
-        output_text += "\n"
+        out_text += make_board_info_text(board_info,
+                                         is_number=is_number,
+                                         reverse=False)
 
         # first koma
-        if board_info["turn"]:
-            output_text += "[手番]"
+        out_text += make_user_text(board_info["info"]["first"]["name"],
+                                   board_info["first"],
+                                   is_first=True,
+                                   is_turn=board_info["turn"])
 
-        output_text += "先手 {} ： ".format(board_info["info"]["first"]["name"])
-        cnt = 0
-        if board_info["first"]:
-            for koma in sorted(board_info["first"]):
-                cnt += 1
-                # if a number of motigoma is more than 7,
-                # go to next line.
-                if cnt == 7:
-                    output_text += "\n　　    "
-                    cnt = 1
-                output_text += koma2emoji[koma] + " "
-        else:
-            output_text += "持ち駒なし"
-
-        output_text += "\n"
-
-        return output_text
+        return out_text
 
     @staticmethod
     def make_board_emoji_reverse(board_info):
+        out_text = ""
+
         # first koma
-        output_text = ""
-        if board_info["turn"]:
-            output_text = "[手番]"
-
-        output_text += "先手 {} ： ".format(board_info["info"]["first"]["name"])
-        cnt = 0
-        if board_info["first"]:
-            for koma in board_info["first"]:
-                cnt += 1
-                # if a number of motigoma is more than 7,
-                # go to next line.
-                if cnt == 7:
-                    output_text += "\n　　    "
-                    cnt = 1
-                output_text += koma2emoji_re[koma] + " "
-        else:
-            output_text += "持ち駒なし"
-
-        output_text += "\n\n"
+        out_text += make_user_text(board_info["info"]["first"]["name"],
+                                   board_info["first"],
+                                   is_first=True,
+                                   is_turn=board_info["turn"])
 
         # board
-        for y in reversed(range(9)):
-            output_text += y_number2emoji[list(reversed(y_labels))[y]]
-            for x in reversed(range(9)):
-                if x == board_info["_shogi"].shogi.last_move_x and \
-                   y == board_info["_shogi"].shogi.last_move_y:
-                    output_text += koma2emoji_re[board_info["board"][y][x]].                    replace(emoji_prefix, emoji_prefix + "last_")
-                else:
-                    output_text += koma2emoji_re[board_info["board"][y][x]]
-            output_text += "\n"
-        output_text += ":slackshogisss_blank:"
-        for x_label in x_labels:
-            output_text += x_number2emoji[x_label]
-        output_text += "\n"
+        out_text += make_board_info_text(board_info,
+                                         is_number=True,
+                                         reverse=True)
 
         # socond koma
-        if not board_info["turn"]:
-            output_text += "[手番]"
+        out_text += make_user_text(board_info["info"]["second"]["name"],
+                                   board_info["second"],
+                                   is_first=False,
+                                   is_turn=not board_info["turn"])
 
-        output_text += "後手 {} ： ".format(board_info["info"]["second"]["name"])
-        cnt = 0
-        if board_info["second"]:
-            for koma in board_info["second"]:
-                cnt += 1
-                # if a number of motigoma is more than 7,
-                # go to next line.
-                if cnt == 7:
-                    output_text += "\n　　    "
-                    cnt = 1
-                output_text += koma2emoji_re[koma] + " "
-        else:
-            output_text += "持ち駒なし"
-
-        output_text += "\n"
-
-        return output_text
+        return out_text
