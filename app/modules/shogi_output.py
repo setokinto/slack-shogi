@@ -37,39 +37,6 @@ koma2emoji = {
     Koma.opponent_promoted_hisha: emoji_separetor + emoji_prefix + "ryu_enemy" + emoji_separetor,
 }
 
-koma2emoji_re = {
-    Koma.empty: emoji_separetor + emoji_prefix + "mu" + emoji_separetor,
-    Koma.fu: emoji_separetor + emoji_prefix + "fu_enemy" + emoji_separetor,
-    Koma.kyosha: emoji_separetor + emoji_prefix + "kyou_enemy" + emoji_separetor,
-    Koma.keima: emoji_separetor + emoji_prefix + "kei_enemy" + emoji_separetor,
-    Koma.gin: emoji_separetor + emoji_prefix + "gin_enemy" + emoji_separetor,
-    Koma.kin: emoji_separetor + emoji_prefix + "kin_enemy" + emoji_separetor,
-    Koma.kaku: emoji_separetor + emoji_prefix + "kaku_enemy" + emoji_separetor,
-    Koma.hisha: emoji_separetor + emoji_prefix + "hi_enemy" + emoji_separetor,
-    Koma.gyoku: emoji_separetor + emoji_prefix + "gyoku_enemy" + emoji_separetor,
-    Koma.promoted_fu: emoji_separetor + emoji_prefix + "tokin_enemy" + emoji_separetor,
-    Koma.promoted_kyosha: emoji_separetor + emoji_prefix + "narikyou_enemy" + emoji_separetor,
-    Koma.promoted_keima: emoji_separetor + emoji_prefix + "narikei_enemy" + emoji_separetor,
-    Koma.promoted_gin: emoji_separetor + emoji_prefix + "narigin_enemy" + emoji_separetor,
-    Koma.promoted_kaku: emoji_separetor + emoji_prefix + "uma_enemy" + emoji_separetor,
-    Koma.promoted_hisha: emoji_separetor + emoji_prefix + "ryu_enemy" + emoji_separetor,
-
-    Koma.opponent_fu: emoji_separetor + emoji_prefix + "fu" + emoji_separetor,
-    Koma.opponent_kyosha: emoji_separetor + emoji_prefix + "kyou" + emoji_separetor,
-    Koma.opponent_keima: emoji_separetor + emoji_prefix + "kei" + emoji_separetor,
-    Koma.opponent_gin: emoji_separetor + emoji_prefix + "gin" + emoji_separetor,
-    Koma.opponent_kin: emoji_separetor + emoji_prefix + "kin" + emoji_separetor,
-    Koma.opponent_kaku: emoji_separetor + emoji_prefix + "kaku" + emoji_separetor,
-    Koma.opponent_hisha: emoji_separetor + emoji_prefix + "hi" + emoji_separetor,
-    Koma.opponent_gyoku: emoji_separetor + emoji_prefix + "ou" + emoji_separetor,
-    Koma.opponent_promoted_fu: emoji_separetor + emoji_prefix + "tokin" + emoji_separetor,
-    Koma.opponent_promoted_kyosha: emoji_separetor + emoji_prefix + "narikyou" + emoji_separetor,
-    Koma.opponent_promoted_keima: emoji_separetor + emoji_prefix + "narikei" + emoji_separetor,
-    Koma.opponent_promoted_gin: emoji_separetor + emoji_prefix + "narigin" + emoji_separetor,
-    Koma.opponent_promoted_kaku: emoji_separetor + emoji_prefix + "uma" + emoji_separetor,
-    Koma.opponent_promoted_hisha: emoji_separetor + emoji_prefix + "ryu" + emoji_separetor,
-}
-
 x_number2emoji = {
     1: emoji_separetor + emoji_prefix + "one" + emoji_separetor,
     2: emoji_separetor + emoji_prefix + "two" + emoji_separetor,
@@ -114,10 +81,7 @@ def make_user_text(user_name, motigoma,
             if cnt == 5:
                 return_text += "\n" + (" " * user_info_char_num)
                 cnt = 1
-            if reverse:
-                return_text += koma2emoji_re[cur_koma] + " "
-            else:
-                return_text += koma2emoji[cur_koma] + " "
+            return_text += koma2emoji[cur_koma] + " "
     else:
         return_text += "持ち駒なし"
 
@@ -125,7 +89,7 @@ def make_user_text(user_name, motigoma,
     return return_text
 
 
-def make_board_info_text(board_info, is_number=False, reverse=False):
+def make_board_info_text(board_info, reverse=False):
     return_text = ""
     x_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     y_labels = [9, 8, 7, 6, 5, 4, 3, 2, 1]
@@ -134,7 +98,7 @@ def make_board_info_text(board_info, is_number=False, reverse=False):
     if reverse:
         loop_iter.reverse()
 
-    if is_number and not reverse:
+    if not reverse:
         for y_label in y_labels:
             return_text += y_number2emoji[y_label]
         return_text += "\n"
@@ -153,7 +117,7 @@ def make_board_info_text(board_info, is_number=False, reverse=False):
                     emoji_prefix + "last_")
             else:
                 return_text += koma2emoji[cur_koma]
-        if is_number and not reverse:
+        if not reverse:
             return_text += x_number2emoji[x_labels[y]]
         return_text += "\n"
 
@@ -168,7 +132,7 @@ def make_board_info_text(board_info, is_number=False, reverse=False):
 
 class ShogiOutput:
     @staticmethod
-    def make_board_emoji(board_info, is_number=False):
+    def make_board_emoji(board_info):
         out_text = ""
 
         out_text += make_user_text(board_info["info"]["second"]["name"],
@@ -178,7 +142,6 @@ class ShogiOutput:
 
         # board
         out_text += make_board_info_text(board_info,
-                                         is_number=is_number,
                                          reverse=False)
 
         # first koma
@@ -201,7 +164,6 @@ class ShogiOutput:
 
         # board
         out_text += make_board_info_text(board_info,
-                                         is_number=True,
                                          reverse=True)
 
         # socond koma
