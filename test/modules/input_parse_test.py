@@ -40,7 +40,7 @@ class ShogiTest(unittest.TestCase):
         self.assertEqual(ParseInput.parse("58金引", shogi), False)
         shogi.move(4, 8, 5, 7, False)
         shogi.move(5, 8, 4, 8, False)
-        shogi.shogi.first = True
+        shogi._shogi.first = True
         self.assertIn([3, 8], shogi.find_koma(Koma.kin))
         self.assertIn([4, 8], shogi.find_koma(Koma.kin))
         self.assertEqual(ParseInput.parse("58金直", shogi),
@@ -73,8 +73,8 @@ class ShogiTest(unittest.TestCase):
     def test_parse_drop(self):
         shogi = create_shogi()
         shogi.board[6][0] = Koma.empty
-        shogi.shogi.first_tegoma = [Koma.fu]
-        shogi.shogi.first = True
+        shogi._shogi.first_tegoma = [Koma.fu]
+        shogi._shogi.first = True
         self.assertEqual(ParseInput.parse("95歩打", shogi),
                          (-1, -1, 0, 4, False, Koma.fu))
         self.assertEqual(ParseInput.parse("95歩打成", shogi), False)
