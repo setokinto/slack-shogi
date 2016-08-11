@@ -151,3 +151,14 @@ class ShogiTest(unittest.TestCase):
         with self.assertRaises(KomaCannotMoveException):
             ShogiInput.matta(channel_id, shogi.first_user.id)
 
+    def test_try_to_get_shogi_board(self):
+        channel_id = "test_try_to_get_shogi_board"
+        shogi = ShogiInput.init(channel_id, [{
+            "id": "user1",
+            "name": "user1name",
+        }, {
+            "id": "user2",
+            "name": "user2name",
+        }])
+        ShogiInput.get_shogi_board(channel_id)
+

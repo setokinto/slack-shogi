@@ -120,8 +120,8 @@ class ShogiInput:
         if shogi is None:
             return None
         return {
-            "first": shogi.shogi.first_tegoma,
-            "second": shogi.shogi.second_tegoma,
+            "first": shogi.first_tegoma,
+            "second": shogi.second_tegoma,
             "board": shogi.board,
             "info": {
                 "first": {
@@ -212,3 +212,10 @@ class Shogi:
     def last_move_y(self):
         return self._shogi.last_move_y
 
+    @property
+    def first_tegoma(self):
+        return self._shogi.first_tegoma
+
+    @property
+    def second_tegoma(self):
+        return self._shogi.second_tegoma
