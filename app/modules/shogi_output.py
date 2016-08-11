@@ -110,8 +110,8 @@ def make_board_info_text(board_info, reverse=False):
             if reverse and cur_koma != Koma.empty:
                 cur_koma = cur_koma.go_enemy()
 
-            if x == board_info["_shogi"].shogi.last_move_x and \
-               y == board_info["_shogi"].shogi.last_move_y:
+            if x == board_info["_shogi"]._shogi.last_move_x and \
+               y == board_info["_shogi"]._shogi.last_move_y:
                 return_text += koma2emoji[cur_koma].replace(
                     emoji_prefix,
                     emoji_prefix + "last_")
