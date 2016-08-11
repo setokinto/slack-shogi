@@ -133,11 +133,9 @@ def matta(channel, message):
 
 @respond_to(".*ひふみん[eye, アイ, あい]?")
 @respond_to(".*反転.*")
+@channel_info
+@should_exist_shogi
 def hifumin(message):
-    channel_id = message.body["channel"]
-    if not ShogiInput.exists(channel_id):
-        message.reply("start withから初めてね")
-        return
-    board = ShogiInput.get_shogi_board(channel_id)
+    board = ShogiInput.get_shogi_board(channel.channel_id)
     board_str = ShogiOutput.make_board_emoji_reverse(board)
     message.send(board_str)
