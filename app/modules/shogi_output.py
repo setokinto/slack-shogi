@@ -38,18 +38,6 @@ koma2emoji = {
 }
 
 x_number2emoji = {
-    1: emoji_separetor + emoji_prefix + "one" + emoji_separetor,
-    2: emoji_separetor + emoji_prefix + "two" + emoji_separetor,
-    3: emoji_separetor + emoji_prefix + "three" + emoji_separetor,
-    4: emoji_separetor + emoji_prefix + "four" + emoji_separetor,
-    5: emoji_separetor + emoji_prefix + "five" + emoji_separetor,
-    6: emoji_separetor + emoji_prefix + "six" + emoji_separetor,
-    7: emoji_separetor + emoji_prefix + "seven" + emoji_separetor,
-    8: emoji_separetor + emoji_prefix + "eight" + emoji_separetor,
-    9: emoji_separetor + emoji_prefix + "nine" + emoji_separetor,
-}
-
-y_number2emoji = {
     1: emoji_separetor + emoji_prefix + "iti" + emoji_separetor,
     2: emoji_separetor + emoji_prefix + "ni" + emoji_separetor,
     3: emoji_separetor + emoji_prefix + "san" + emoji_separetor,
@@ -58,7 +46,19 @@ y_number2emoji = {
     6: emoji_separetor + emoji_prefix + "roku" + emoji_separetor,
     7: emoji_separetor + emoji_prefix + "nana" + emoji_separetor,
     8: emoji_separetor + emoji_prefix + "hati" + emoji_separetor,
-    9: emoji_separetor + emoji_prefix + "kyu" + emoji_separetor,
+    9: emoji_separetor + emoji_prefix + "kyu" + emoji_separetor
+}
+
+y_number2emoji = {
+    1: emoji_separetor + emoji_prefix + "one" + emoji_separetor,
+    2: emoji_separetor + emoji_prefix + "two" + emoji_separetor,
+    3: emoji_separetor + emoji_prefix + "three" + emoji_separetor,
+    4: emoji_separetor + emoji_prefix + "four" + emoji_separetor,
+    5: emoji_separetor + emoji_prefix + "five" + emoji_separetor,
+    6: emoji_separetor + emoji_prefix + "six" + emoji_separetor,
+    7: emoji_separetor + emoji_prefix + "seven" + emoji_separetor,
+    8: emoji_separetor + emoji_prefix + "eight" + emoji_separetor,
+    9: emoji_separetor + emoji_prefix + "nine" + emoji_separetor
 }
 
 
