@@ -77,6 +77,8 @@ def make_user_text(user_name, motigoma,
     if motigoma:
         cnt = 0
         for cur_koma in motigoma:
+            if reverse:
+                cur_koma = cur_koma.go_enemy()
             cnt += 1
             if cnt == 5:
                 return_text += "\n" + (" " * user_info_char_num)
@@ -94,18 +96,18 @@ def make_board_info_text(board_info, reverse=False):
     x_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     y_labels = [9, 8, 7, 6, 5, 4, 3, 2, 1]
 
-    loop_iter = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    loop_list = [0, 1, 2, 3, 4, 5, 6, 7, 8]
     if reverse:
-        loop_iter.reverse()
+        loop_list.reverse()
 
     if not reverse:
         for y_label in y_labels:
             return_text += y_number2emoji[y_label]
         return_text += "\n"
-    for y in loop_iter:
+    for y in loop_list:
         if reverse:
             return_text += y_number2emoji[list(reversed(y_labels))[y]]
-        for x in loop_iter:
+        for x in loop_list:
             cur_koma = board_info["board"][y][x]
             if reverse and cur_koma != Koma.empty:
                 cur_koma = cur_koma.go_enemy()
@@ -162,7 +164,8 @@ class ShogiOutput:
         out_text += make_user_text(board_info["info"]["first"]["name"],
                                    board_info["first"],
                                    is_first=True,
-                                   is_turn=board_info["turn"])
+                                   is_turn=board_info["turn"],
+                                   reverse=True)
 
         # board
         out_text += make_board_info_text(board_info,
@@ -172,6 +175,7 @@ class ShogiOutput:
         out_text += make_user_text(board_info["info"]["second"]["name"],
                                    board_info["second"],
                                    is_first=False,
-                                   is_turn=not board_info["turn"])
+                                   is_turn=not board_info["turn"],
+                                   reverse=True)
 
         return out_text
