@@ -1,7 +1,14 @@
 machine:
     python:
         version: 3.5.0
+dependencies:
+    pre:
+        - pip install coverage
+        - pip install codeclimate-test-reporter
 test:
     override:
-        - python setup.py test
+        - coverage run --include=`pwd`/app/* setup.py test
+    post:
+        - coverage html -d $CIRCLE_ARTIFACTS --include=`pwd`/app/*
+        - codeclimate-test-reporter
 
