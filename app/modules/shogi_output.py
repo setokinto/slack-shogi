@@ -122,7 +122,9 @@ def make_board_info_text(board_info, reverse=False):
         return_text += "\n"
 
     if reverse:
-        return_text += ":slackshogisss_blank:"
+        return_text += "{}{}blank{}".format(emoji_separetor,
+                                            emoji_prefix,
+                                            emoji_separetor)
         for x_label in x_labels:
             return_text += x_number2emoji[x_label]
     return_text += "\n"
