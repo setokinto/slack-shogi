@@ -155,7 +155,7 @@ class ShogiUser:
 class Shogi:
 
     def __init__(self, channel_id, users, validator=BasicUserValidator()):
-        self.shogi = ShogiModule()
+        self._shogi = ShogiModule()
         self.channel_id = channel_id
         self.user_ids = [x["id"] for x in users]
         random.shuffle(users)
@@ -166,20 +166,20 @@ class Shogi:
         self.kifu = Kifu()
 
     def move(self, from_x, from_y, to_x, to_y, promote):
-        self.shogi.move(from_x, from_y, to_x, to_y, promote)
+        self._shogi.move(from_x, from_y, to_x, to_y, promote)
         self.kifu.add(from_x, from_y, to_x, to_y, promote)
 
     def drop(self, koma, to_x, to_y):
-        self.shogi.drop(koma, to_x, to_y)
+        self._shogi.drop(koma, to_x, to_y)
 
     def movable(self, from_x, from_y, to_x, to_y, promote):
-        return self.shogi.movable(from_x, from_y, to_x, to_y, promote)
+        return self._shogi.movable(from_x, from_y, to_x, to_y, promote)
 
     def droppable(self, koma, to_x, to_y):
-        return self.shogi.droppable(koma, to_x, to_y)
+        return self._shogi.droppable(koma, to_x, to_y)
 
     def find_koma(self, koma):
-        return self.shogi.find_koma(koma)
+        return self._shogi.find_koma(koma)
 
     def validate(self, shogi, user_id):
         return self._validator.validate(shogi, user_id)
@@ -191,16 +191,24 @@ class Shogi:
         if len(self.kifu.kifu) == 0:
             raise KomaCannotMoveException
         self.kifu.pop()
-        self.shogi = ShogiModule()
+        self._shogi = ShogiModule()
         for kifu in self.kifu.kifu:
             from_x, from_y, to_x, to_y, promote = kifu
-            self.shogi.move(from_x, from_y, to_x, to_y, promote)
+            self._shogi.move(from_x, from_y, to_x, to_y, promote)
 
     @property
     def first(self):
-        return self.shogi.first
+        return self._shogi.first
 
     @property
     def board(self):
-        return self.shogi.board
+        return self._shogi.board
+
+    @property
+    def last_move_x(self):
+        return self._shogi.last_move_x
+
+    @property
+    def last_move_y(self):
+        return self._shogi.last_move_y
 
