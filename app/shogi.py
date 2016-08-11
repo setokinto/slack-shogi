@@ -135,7 +135,7 @@ def matta(channel, message):
 @respond_to(".*反転.*")
 @channel_info
 @should_exist_shogi
-def hifumin(message):
+def hifumin(channel, message):
     board = ShogiInput.get_shogi_board(channel.channel_id)
     board_str = ShogiOutput.make_board_emoji_reverse(board)
     message.send(board_str)
