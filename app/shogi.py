@@ -113,6 +113,7 @@ def resign(channel, message):
     message.send(board_str)
     ShogiInput.clear(channel.channel_id)
 
+
 @respond_to("待った")
 @channel_info
 @should_exist_shogi
@@ -129,3 +130,12 @@ def matta(channel, message):
         board_str = ShogiOutput.make_board_emoji(board)
         message.send(board_str)
 
+
+@respond_to(".*ひふみん[eye, アイ, あい]?")
+@respond_to(".*反転.*")
+@channel_info
+@should_exist_shogi
+def hifumin(channel, message):
+    board = ShogiInput.get_shogi_board(channel.channel_id)
+    board_str = ShogiOutput.make_board_emoji_reverse(board)
+    message.send(board_str)

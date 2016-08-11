@@ -69,6 +69,25 @@ emojis = {
     "images/last_ryu_.png": "last_ryu_enemy",
     "images/last_gyoku_.png": "last_gyoku_enemy",
     "images/last_ou_.png": "last_ou_enemy",
+    "images/one.png": "one",
+    "images/two.png": "two",
+    "images/three.png": "three",
+    "images/four.png": "four",
+    "images/five.png": "five",
+    "images/six.png": "six",
+    "images/seven.png": "seven",
+    "images/eight.png": "eight",
+    "images/nine.png": "nine",
+    "images/iti.png": "iti",
+    "images/ni.png": "ni",
+    "images/san.png": "san",
+    "images/yon.png": "yon",
+    "images/go.png": "go",
+    "images/roku.png": "roku",
+    "images/nana.png": "nana",
+    "images/hati.png": "hati",
+    "images/kyu.png": "kyu",
+    "images/origin.png": "blank"
 }
 
 
