@@ -1,4 +1,7 @@
 [![CircleCI](https://circleci.com/gh/setokinto/slack-shogi.svg?style=svg)](https://circleci.com/gh/setokinto/slack-shogi)
+[![Code Climate](https://codeclimate.com/github/setokinto/slack-shogi/badges/gpa.svg)](https://codeclimate.com/github/setokinto/slack-shogi)
+[![Test Coverage](https://codeclimate.com/github/setokinto/slack-shogi/badges/coverage.svg)](https://codeclimate.com/github/setokinto/slack-shogi/coverage)
+[![Issue Count](https://codeclimate.com/github/setokinto/slack-shogi/badges/issue_count.svg)](https://codeclimate.com/github/setokinto/slack-shogi)
 
 # How to use
 1. Create a Bot https://your-team-name.slack.com/apps/A0F7YS25R-bots
