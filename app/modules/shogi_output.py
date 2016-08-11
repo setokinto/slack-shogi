@@ -106,7 +106,8 @@ def make_board_info_text(board_info, reverse=False):
         return_text += "\n"
     for y in loop_list:
         if reverse:
-            return_text += y_number2emoji[list(reversed(y_labels))[y]]
+            # because reverse mode, use x_number
+            return_text += x_number2emoji[list(reversed(y_labels))[y]]
         for x in loop_list:
             cur_koma = board_info["board"][y][x]
             if reverse and cur_koma != Koma.empty:
@@ -128,7 +129,8 @@ def make_board_info_text(board_info, reverse=False):
                                             emoji_prefix,
                                             emoji_separetor)
         for x_label in x_labels:
-            return_text += x_number2emoji[x_label]
+            # because reverse mode, use y_number
+            return_text += y_number2emoji[x_label]
     return_text += "\n"
 
     return return_text
