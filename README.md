@@ -5,7 +5,7 @@
 
 Slack-Shogi
 -----------
-This is a room with a shogi board.
+This is a room, with a shogi board.
 
 # How to use
 1. Create a Bot https://your-team-name.slack.com/apps/A0F7YS25R-bots
