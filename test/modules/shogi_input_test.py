@@ -151,6 +151,29 @@ class ShogiTest(unittest.TestCase):
         with self.assertRaises(KomaCannotMoveException):
             ShogiInput.matta(channel_id, shogi.first_user.id)
 
+    def test_matta_for_drop_komas(self):
+        channel_id = "test_matta_for_da_komas"
+        shogi = ShogiInput.init(channel_id, [{
+            "id": "user1",
+            "name": "user1name",
+        }, {
+            "id": "user2",
+            "name": "user2name",
+        }])
+        ShogiInput.move("76歩", channel_id, shogi.first_user.id)
+        ShogiInput.move("34歩", channel_id, shogi.second_user.id)
+        ShogiInput.move("22角", channel_id, shogi.first_user.id)
+        ShogiInput.move("同銀", channel_id, shogi.second_user.id)
+        ShogiInput.move("55角打", channel_id, shogi.first_user.id)
+        ShogiInput.move("33角打", channel_id, shogi.second_user.id)
+        ShogiInput.matta(channel_id, shogi.first_user.id)
+        ShogiInput.matta(channel_id, shogi.second_user.id)
+        ShogiInput.move("55角打", channel_id, shogi.first_user.id)
+        ShogiInput.move("33角打", channel_id, shogi.second_user.id)
+
+        self.assertEqual(shogi.board[4][4], Koma.kaku)
+        self.assertEqual(shogi.board[2][6], Koma.opponent_kaku)
+
     def test_try_to_get_shogi_board(self):
         channel_id = "test_try_to_get_shogi_board"
         shogi = ShogiInput.init(channel_id, [{

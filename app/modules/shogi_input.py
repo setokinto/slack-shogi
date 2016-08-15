@@ -167,10 +167,11 @@ class Shogi:
 
     def move(self, from_x, from_y, to_x, to_y, promote):
         self._shogi.move(from_x, from_y, to_x, to_y, promote)
-        self.kifu.add(from_x, from_y, to_x, to_y, promote)
+        self.kifu.add(from_x, from_y, to_x, to_y, promote, None)
 
     def drop(self, koma, to_x, to_y):
         self._shogi.drop(koma, to_x, to_y)
+        self.kifu.add(-1, -1, to_x, to_y, False, koma)
 
     def movable(self, from_x, from_y, to_x, to_y, promote):
         return self._shogi.movable(from_x, from_y, to_x, to_y, promote)
@@ -193,8 +194,11 @@ class Shogi:
         self.kifu.pop()
         self._shogi = ShogiModule()
         for kifu in self.kifu.kifu:
-            from_x, from_y, to_x, to_y, promote = kifu
-            self._shogi.move(from_x, from_y, to_x, to_y, promote)
+            from_x, from_y, to_x, to_y, promote, koma = kifu
+            if koma is None:
+                self._shogi.move(from_x, from_y, to_x, to_y, promote)
+            else:
+                self._shogi.drop(koma, to_x, to_y)
 
     @property
     def first(self):
