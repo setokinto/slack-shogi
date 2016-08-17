@@ -3,6 +3,10 @@
 [![Test Coverage](https://codeclimate.com/github/setokinto/slack-shogi/badges/coverage.svg)](https://codeclimate.com/github/setokinto/slack-shogi/coverage)
 [![Issue Count](https://codeclimate.com/github/setokinto/slack-shogi/badges/issue_count.svg)](https://codeclimate.com/github/setokinto/slack-shogi)
 
+Slack-Shogi
+-----------
+This is a room, with a shogi board.
+
 # How to use
 1. Create a Bot https://your-team-name.slack.com/apps/A0F7YS25R-bots
 2. Copy config file `cp slackbot_settings.py.default slackbot_settings.py`
