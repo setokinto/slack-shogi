@@ -10,3 +10,4 @@ COPY slackbot_settings.py.docker slackbot_settings.py
 USER slackbot
 CMD ["python", "main.py"]
 
+
