@@ -1,0 +1,6 @@
+
+slack-shogi:
+    build: ./
+    volumes:
+        - ./:/app
+

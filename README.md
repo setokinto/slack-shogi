@@ -44,6 +44,17 @@ Completed!!
 
 If you already inputted emojis and has a difference for adding emojis, you can use `--patch` option for this script. The script called with this optioin ignores emojis which already registed.
 
+# Using Docker
+You are using Docker? Yes. It is available for Docker.
+
+## Try it easily
+Try this bot with `docker run --env SLACK_SHOGI_API_TOKEN="<Your Slack Bot Token>" setokinto/slack-shogi`
+
+## Develop with Docker
+1. Move slackbot_settings.py from slackbot_settings.py.default and put youput your keys.
+2. `docker-compose up`
+3. In your slack team, say `@yourbot: start with @username`
+
 # Thanks for
 - [Slackbot](https://github.com/lins05/slackbot)
 - [Slacker](https://github.com/os/slacker)
