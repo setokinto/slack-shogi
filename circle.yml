@@ -3,7 +3,7 @@ machine:
         version: 3.5.0
 dependencies:
     pre:
-        - pip install coverage
+        - pip install coverage==4.3.4
         - pip install codeclimate-test-reporter
 test:
     override:
