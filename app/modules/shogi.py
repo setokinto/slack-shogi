@@ -324,7 +324,7 @@ movable_positions = {
     Koma.gyoku: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]],
 }
 movable_positions[Koma.promoted_fu] = movable_positions[Koma.promoted_kyosha] = movable_positions[
-    Koma.promoted_kyosha] = movable_positions[Koma.promoted_gin] = movable_positions[Koma.kin]
+    Koma.promoted_keima] = movable_positions[Koma.promoted_gin] = movable_positions[Koma.kin]
 movable_positions[Koma.promoted_kaku] = movable_positions[
     Koma.kaku] + [[0, -1], [-1, 0], [1, 0], [0, 1]]
 movable_positions[Koma.promoted_hisha] = movable_positions[
