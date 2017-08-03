@@ -59,7 +59,7 @@ koma_names = [
 
 koma_names_string_regex = "|".join(koma_names)
 
-@respond_to("([一二三四五六七八九123456789１２３４５６７８９]{2})?(同)?(" + koma_names_string_regex + ")([上右下左寄直打]{1,2})?つ?(成)?")
+@respond_to("^([一二三四五六七八九123456789１２３４５６７８９]{2})?(同)?(" + koma_names_string_regex + ")([上右下左引寄直打]{1,2})?つ?(成)?")
 @channel_info
 @should_exist_shogi
 def koma_move(channel, message, position, dou, koma, sub_position=None, promote=None):
