@@ -92,6 +92,17 @@ class ShogiTest(unittest.TestCase):
         self.assertEqual(ParseInput.parse("同金右", shogi),
                          (3, 0, 4, 1, False, Koma.opponent_kin))
 
+    def test_parse_sugu(self):
+        shogi = create_shogi()
+        shogi.move(5, 8, 4, 7, False) # 58金
+        shogi.move(0, 2, 0, 3, False) # 94歩
+        shogi.move(3, 6, 3, 5, False) # 66歩
+        shogi.move(0, 3, 0, 4, False) # 95歩
+        shogi.move(4, 7, 3, 6, False) # 67金
+        shogi.move(0, 4, 0, 5, False) # 96歩
+        self.assertEqual(ParseInput.parse("68金直", shogi),
+                         (3, 8, 3, 7, False, Koma.kin))
+
     @unittest.skip("see https://github.com/setokinto/slack-shogi/issues/19")
     def test_parse_ambiguous(self):
         shogi = create_shogi()

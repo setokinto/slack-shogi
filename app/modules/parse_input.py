@@ -306,7 +306,7 @@ class ParseInput:
             # "直"
             elif from_flag == 17:
                 for t in movable_komas:
-                    if (t[0] == to_x):
+                    if (t[0] == to_x and ((turn and t[1] > to_y) or (not turn and t[1] < to_y))):
                         from_x, from_y = t
                         from_flag = 0
                         break
