@@ -2,8 +2,11 @@
 import getpass
 import time
 import sys
+import re
 
 import mechanize
+import requests
+from bs4 import BeautifulSoup
 
 emoji_prefix = "slackshogisss_"
 
@@ -90,53 +93,70 @@ emojis = {
     "images/origin.png": "blank"
 }
 
+API_TOKEN_REGEX = r"api_token: \"(.*)\","
+API_TOKEN_PATTERN = re.compile(API_TOKEN_REGEX)
 
-def input_emojis(id_, password, team_id, two_factor, force_update=False):
-    br = mechanize.Browser()
-    br.set_handle_robots(False)
-    br.open("https://{}.slack.com/".format(team_id))
-    br.select_form(nr=0)
-    br["email"] = id_
-    br["password"] = password
-    br.submit()
-    if two_factor:
+def _fetch_api_token(session, team_id):
+    # Fetch the form first, to get an api_token.
+    URL_CUSTOMIZE = f"https://{team_id}.slack.com/customize/emoji"
+
+    r = session.get(URL_CUSTOMIZE)
+    r.raise_for_status()
+    soup = BeautifulSoup(r.text, "html.parser")
+
+    all_script = soup.findAll("script")
+    for script in all_script:
+        for line in script.text.splitlines():
+            if 'api_token' in line:
+                # api_token: "xoxs-12345-abcdefg....",
+                return API_TOKEN_PATTERN.match(line.strip()).group(1)
+
+
+def input_emojis(id_, password, team_id, two_factor):
+    session = requests.session()
+    URL_ADD = f"https://{team_id}.slack.com/api/emoji.add"
+    if password.startswith("xoxs-"):
+        api_token = password
+    else:
+        br = mechanize.Browser()
+        br.set_handle_robots(False)
+        br.open("https://{}.slack.com/?no_sso=1".format(team_id))
         br.select_form(nr=0)
-        br["2fa_code"] = two_factor
+        br["email"] = id_
+        br["password"] = password
         br.submit()
+        if two_factor:
+            br.select_form(nr=0)
+            br["2fa_code"] = two_factor
+            br.submit()
+
+
+        session.cookies = br.cookiejar
+        api_token = _fetch_api_token(session, team_id)
 
     count = 0
     for file_name in emojis:
         emoji_name = emojis[file_name]
-        response = br.open(
-            "https://{}.slack.com/customize/emoji".format(team_id))
-        if response.read().find(emoji_name) >= 0 and not force_update:
-            # Simple resume. Does it work?
-            # FIXME: Use beautiful soup and search it using dom
-            print("{}/{} skipped(already exists for the name '{}')".format(count,
-                                                                           len(emojis), emoji_name))
-            continue
-        br.select_form(nr=0)
-        br["name"] = emoji_prefix + emoji_name
-        br.form.add_file(open(file_name), "images/png", file_name, name="img")
-        br.submit()
+        data = {"mode": "data", "name": emoji_prefix + emoji_name, "token": api_token}
+        files = {'image': open(file_name, "rb")}
+        r = session.post(URL_ADD, data=data, files=files, allow_redirects=False)
+        mes = r.json()
+        if mes["ok"]:
+            print(f"succeeded to register: {emoji_prefix + emoji_name}")
+        else:
+            print(f"failed to register: {emoji_prefix + emoji_name}")
+            print(f"reason: {mes['error']}")
+
         count += 1
         print("{}/{} completed".format(count, len(emojis)))
         time.sleep(1)
 
 
-def is_force_update():
-    args = sys.argv
-    if not len(args) == 2:
-        return True
-    if "-p" in args or "--patch" in args:
-        return False
-    return True
-
-
 if __name__ == "__main__":
-    force_update = is_force_update()
-    team_id = raw_input("your slack team id: ")
-    id_ = raw_input("your id: ")
-    password = getpass.getpass("your password: ")
-    two_factor = raw_input("authentication code for two factor(If needed) :")
-    input_emojis(id_, password, team_id, two_factor, force_update)
+    team_id = input("your slack team id: ")
+    id_ = input("your email: ")
+    password = getpass.getpass("your password or api token(xoxs-xxxx-xxxx): ")
+    two_factor = input("authentication code for two factor(If needed) :")
+
+    input_emojis(id_, password, team_id, two_factor)
+
