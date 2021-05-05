@@ -1,4 +1,4 @@
-FROM python:3.5.1
+FROM python:3.9.5
 MAINTAINER Kouki Saito <dan.addr.skd@gmail.com>
 
 RUN groupadd -r slackbot && useradd -r -g slackbot slackbot
