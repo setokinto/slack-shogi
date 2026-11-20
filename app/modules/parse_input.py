@@ -223,6 +223,8 @@ class ParseInput:
 
         else:
             turn = is_first_turn  # for pep
+            if from_flag == 0:
+                return False
             # "上"
             if from_flag == 1:
                 for t in movable_komas:  # t => "t"arget
