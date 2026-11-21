@@ -142,6 +142,9 @@ class ParseInput:
             to_x = shogi.last_move_x
             to_y = shogi.last_move_y
 
+            if to_x is None or to_y is None:
+                return False
+
         # get to_x, to_y from text
         else:
             if input_str[0] in str2info and input_str[0] in str2info:
